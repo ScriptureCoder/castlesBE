@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateModelsPropertyLabelsTable extends Migration
+class CreatePropertyReviewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateModelsPropertyLabelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('models_property_labels', function (Blueprint $table) {
+        Schema::create('property_reviews', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer("user_id");
+            $table->integer("star");
+            $table->longText("comment")->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateModelsPropertyLabelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('models_property_labels');
+        Schema::dropIfExists('property_reviews');
     }
 }
