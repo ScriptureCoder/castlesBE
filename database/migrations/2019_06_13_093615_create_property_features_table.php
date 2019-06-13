@@ -15,8 +15,8 @@ class CreatePropertyFeaturesTable extends Migration
     {
         Schema::create('property_features', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer("bedrooms")->nullable();
-            $table->timestamps();
+            $table->integer("property_id");
+            $table->integer("feature_id");
         });
     }
 

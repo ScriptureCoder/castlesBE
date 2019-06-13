@@ -22,8 +22,12 @@ class CreatePropertiesTable extends Migration
             $table->integer("property_status_id");
             $table->integer("property_type_id");
             $table->boolean("feature")->default(false);
-            $table->integer("state_id");
             $table->integer("image_id")->nullable();
+            $table->integer("bedrooms")->nullable();
+            $table->integer("bathrooms")->nullable();
+            $table->integer("state_id");
+            $table->integer("city_id");
+            $table->string("address")->nullable();
             $table->timestamps();
         });
     }

@@ -11,6 +11,6 @@ class PropertyTypeTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        \App\Models\PropertyType::insert();
     }
 }
