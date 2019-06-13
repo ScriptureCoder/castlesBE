@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PropertyStatus extends Model
 {
-    //
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
+    }
 }

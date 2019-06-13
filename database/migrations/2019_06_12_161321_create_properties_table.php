@@ -15,6 +15,7 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer("user_id");
             $table->string("title");
             $table->integer("price");
             $table->string("slug");
@@ -27,6 +28,7 @@ class CreatePropertiesTable extends Migration
             $table->integer("bathrooms")->nullable();
             $table->integer("state_id");
             $table->integer("city_id");
+            $table->integer("country_id")->default(160);
             $table->string("address")->nullable();
             $table->timestamps();
         });

@@ -16,6 +16,7 @@ class CreatePropertyReviewsTable extends Migration
         Schema::create('property_reviews', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer("user_id");
+            $table->integer("property_id");
             $table->integer("star");
             $table->longText("comment")->nullable();
             $table->timestamps();
