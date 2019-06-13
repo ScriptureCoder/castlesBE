@@ -11,6 +11,44 @@ class StateTableSeeder extends Seeder
      */
     public function run()
     {
-        \Illuminate\Support\Facades\DB::table("states")->insert([["name"=>"Abia"], ["name"=>"Abuja Federal Capital Territor"], ["name"=>"Adamawa"], ["name"=>"Akwa Ibom"], ["name"=>"Anambra"], ["name"=>"Bauchi"], ["name"=>"Bayelsa"], ["name"=>"Benue"], ["name"=>"Borno"], ["name"=>"Cross River"], ["name"=>"Delta"], ["name"=>"Ebonyi"], ["name"=>"Edo"], ["name"=>"Ekiti"], ["name"=>"Enugu"], ["name"=>"Gombe"], ["name"=>"Imo"], ["name"=>"Jigawa"], ["name"=>"Kaduna"], ["name"=>"Kano"], ["name"=>"Katsina"], ["name"=>"Kebbi"], ["name"=>"Kogi"], ["name"=>"Kwara"], ["name"=>"Lagos"], ["name"=>"Nassarawa"], ["name"=>"Niger"], ["name"=>"Ogun"], ["name"=>"Ondo"], ["name"=>"Osun"], ["name"=>"Oyo"], ["name"=>"Plateau"], ["name"=>"Rivers"], ["name"=>"Sokoto"], ["name"=>"Taraba"], ["name"=>"Yobe"], ["name"=>"Zamfara"]]);
+        \Illuminate\Support\Facades\DB::table("states")->insert([
+            ["country_id"=>160, "name"=>"Abia"],
+            ["country_id"=>160, "name"=>"Abuja Federal Capital Territor"],
+            ["country_id"=>160, "name"=>"Adamawa"],
+            ["country_id"=>160, "name"=>"Akwa Ibom"],
+            ["country_id"=>160, "name"=>"Anambra"],
+            ["country_id"=>160, "name"=>"Bauchi"],
+            ["country_id"=>160, "name"=>"Bayelsa"],
+            ["country_id"=>160, "name"=>"Benue"],
+            ["country_id"=>160, "name"=>"Borno"],
+            ["country_id"=>160, "name"=>"Cross River"],
+            ["country_id"=>160, "name"=>"Delta"],
+            ["country_id"=>160, "name"=>"Ebonyi"],
+            ["country_id"=>160, "name"=>"Edo"],
+            ["country_id"=>160, "name"=>"Ekiti"],
+            ["country_id"=>160, "name"=>"Enugu"],
+            ["country_id"=>160, "name"=>"Gombe"],
+            ["country_id"=>160, "name"=>"Imo"],
+            ["country_id"=>160, "name"=>"Jigawa"],
+            ["country_id"=>160, "name"=>"Kaduna"],
+            ["country_id"=>160, "name"=>"Kano"],
+            ["country_id"=>160, "name"=>"Katsina"],
+            ["country_id"=>160, "name"=>"Kebbi"],
+            ["country_id"=>160, "name"=>"Kogi"],
+            ["country_id"=>160, "name"=>"Kwara"],
+            ["country_id"=>160, "name"=>"Lagos"],
+            ["country_id"=>160, "name"=>"Nassarawa"],
+            ["country_id"=>160, "name"=>"Niger"],
+            ["country_id"=>160, "name"=>"Ogun"],
+            ["country_id"=>160, "name"=>"Ondo"],
+            ["country_id"=>160, "name"=>"Osun"],
+            ["country_id"=>160, "name"=>"Oyo"],
+            ["country_id"=>160, "name"=>"Plateau"],
+            ["country_id"=>160, "name"=>"Rivers"],
+            ["country_id"=>160, "name"=>"Sokoto"],
+            ["country_id"=>160, "name"=>"Taraba"],
+            ["country_id"=>160, "name"=>"Yobe"],
+            ["country_id"=>160, "name"=>"Zamfara"]
+        ]);
     }
 }
