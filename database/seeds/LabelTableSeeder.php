@@ -12,7 +12,10 @@ class LabelTableSeeder extends Seeder
     public function run()
     {
         \Illuminate\Support\Facades\DB::table("labels")->insert([
-
+            ["name"=>"Hot Offer"],
+            ["name"=>"Premium Listing"],
+            ["name"=>"Sale"],
+            ["name"=>"Sold"]
         ]);
     }
 }
