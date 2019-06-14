@@ -41,7 +41,7 @@ class PasswordController extends Controller
         return response()->json($response, 200);
     }
 
-    public function reset(ResetRequest $request)
+    public function resetPassword(ResetRequest $request)
     {
         $token = PasswordReset::where("token", $request->token)->where('expired_at','>=', Carbon::now());
         if ($token){

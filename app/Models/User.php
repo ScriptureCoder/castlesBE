@@ -16,6 +16,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
+    public function findForPassport($identifier) {
+        return $this->orWhere('email', $identifier)->orWhere('username', $identifier)->first();
+    }
+
     protected $fillable = [
         'name', 'email', 'password',
     ];

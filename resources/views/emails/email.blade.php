@@ -1,7 +1,7 @@
 <htm>
     <body>
     <div>
-        {{$msg}}
+        {!! html_entity_decode($html) !!}
     </div>
     </body>
 </htm>

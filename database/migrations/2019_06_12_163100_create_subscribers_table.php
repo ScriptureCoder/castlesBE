@@ -17,6 +17,7 @@ class CreateSubscribersTable extends Migration
             $table->bigIncrements('id');
             $table->string("email");
             $table->string("name")->nullable();
+            $table->string("suspended")->default("false");
             $table->timestamps();
         });
     }
