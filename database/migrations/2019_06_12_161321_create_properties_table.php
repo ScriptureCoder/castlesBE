@@ -22,7 +22,7 @@ class CreatePropertiesTable extends Migration
             $table->longText("description");
             $table->integer("property_status_id");
             $table->integer("property_type_id");
-            $table->boolean("feature")->default(false);
+            $table->boolean("featured")->default(false);
             $table->integer("image_id")->nullable();
             $table->integer("bedrooms")->nullable();
             $table->integer("bathrooms")->nullable();
@@ -30,6 +30,7 @@ class CreatePropertiesTable extends Migration
             $table->integer("city_id");
             $table->integer("country_id")->default(160);
             $table->string("address")->nullable();
+            $table->boolean("approved")->default(false);
             $table->timestamps();
         });
     }
