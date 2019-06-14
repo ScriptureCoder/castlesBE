@@ -4,3 +4,4 @@ Route::get('/testimony/developers', 'Developer\TestimonialController@getDevTesti
 Route::group(['prefix'=>'client'], function() {
     Route::get('countries', 'StaticController@getCountries');
 });
+Route::get('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
