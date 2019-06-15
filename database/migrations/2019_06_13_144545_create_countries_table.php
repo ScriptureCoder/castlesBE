@@ -18,7 +18,6 @@ class CreateCountriesTable extends Migration
             $table->string("sortname");
             $table->string("name");
             $table->string("phonecode");
-            $table->timestamps();
         });
     }
 

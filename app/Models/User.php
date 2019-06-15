@@ -7,6 +7,7 @@ use App\Models\Image;
 use App\Models\Property;
 use App\Models\Role;
 use App\Models\State;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,6 +15,8 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
+
     use HasApiTokens, Notifiable;
 
     public function findForPassport($identifier) {

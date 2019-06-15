@@ -26,12 +26,15 @@ class CreatePropertiesTable extends Migration
             $table->integer("image_id")->nullable();
             $table->integer("bedrooms")->nullable();
             $table->integer("bathrooms")->nullable();
+            $table->integer("toilets")->nullable();
             $table->integer("state_id");
             $table->integer("city_id");
             $table->integer("country_id")->default(160);
+            $table->integer("views")->default(0);
             $table->string("address")->nullable();
             $table->boolean("approved")->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

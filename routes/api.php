@@ -12,12 +12,12 @@ Route::group(['prefix'=>'client'], function() {
 });
 
 /**Static end-points*/
-Route::get('/countries', 'StaticController@countries');
-Route::get('/states', 'StaticController@states');
-Route::get('/cities/{state_id}', 'StaticController@cities');
-Route::get('/labels', 'StaticController@labels');
-Route::get('/features', 'StaticController@features');
-Route::get('/property_status', 'StaticController@statuses');
-Route::get('/property_types', 'StaticController@types');
+Route::get('/countries', 'Statics\StaticController@countries');
+Route::get('/states', 'Statics\StaticController@states');
+Route::get('/cities/{state_id}', 'Statics\StaticController@cities');
+Route::get('/labels', 'Statics\StaticController@labels');
+Route::get('/features', 'Statics\StaticController@features');
+Route::get('/property_status', 'Statics\StaticController@statuses');
+Route::get('/property_types', 'Statics\StaticController@types');
 
 

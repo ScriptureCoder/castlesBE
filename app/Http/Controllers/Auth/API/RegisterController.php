@@ -37,19 +37,19 @@ class RegisterController extends Controller
         /*Send welcome email with activation link*/
         $link = env("APP_URL")."/activate/".$user->remember_token;
         $email = [
-            "subject"=> 'Welcome to '.env("APP_NAME").' confirmation code',
+            "subject"=> 'Welcome to '.env("APP_NAME"),
             'email' => $request->email,
             "html"=> "<p>Hello $request->username, <br> kindly click on the link bellow to activate your account <br> <a href='$link'>$link</a></p>"
         ];
 
-        Mailer::send($email);
+//        Mailer::send($email);
         /*Authenticate user and return token*/
         $client = Client::where('password_client', 1)->first();
         /*Authenticate user and return access token*/
 
-        $http = new GuzzleHttp\Client;
+        $http = new \GuzzleHttp\Client;
 
-        $response = $http->post('/oauth/token', [
+        $token = $http->post('/oauth/token', [
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id'     => $client->id,
@@ -59,10 +59,11 @@ class RegisterController extends Controller
                 'scope' => '',
             ],
         ]);
+        return json_decode((string) $token->getBody(), true);
 
         $response['status'] = 1;
         $response['message']= "Kindly check your email for verification link;";
-        $response['data']= json_decode((string) $response->getBody(), true);
+        $response['data']= json_decode((string) $token->getBody(), true);
         return response()->json($response, 200);
     }
 
@@ -111,7 +112,7 @@ class RegisterController extends Controller
 
         if ($user && $user->email_verified_at === null)
         {
-            $user->email_verified_at = new Carbon();
+            $user->email_verified_at = Carbon::now();
             $user->save();
 
             $response['status'] = 1;

@@ -14,7 +14,8 @@ class RolesTableSeeder extends Seeder
         \Illuminate\Support\Facades\DB::table("roles")->insert([
             ["name"=>"subscriber"],
             ["name"=>"admin"],
-            ["name"=>"agent"]
+            ["name"=>"agent"],
+            ["name"=>"super admin"]
         ]);
     }
 }

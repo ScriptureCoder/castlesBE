@@ -12,7 +12,7 @@ use App\Models\State;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class StaticContoller extends Controller
+class StaticController extends Controller
 {
     public function countries()
     {
