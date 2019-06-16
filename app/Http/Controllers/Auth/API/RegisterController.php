@@ -47,24 +47,20 @@ class RegisterController extends Controller
         $client = Client::where('password_client', 1)->first();
         /*Authenticate user and return access token*/
 
-        $http = new \GuzzleHttp\Client;
-
-        $token = $http->post('/oauth/token', [
-            'form_params' => [
-                'grant_type' => 'password',
-                'client_id'     => $client->id,
-                'client_secret' => $client->secret,
-                'username'      => $request->email,
-                'password'      => $request->password,
-                'scope' => '',
-            ],
+        $request->request->add([
+            'grant_type'    => 'password',
+            'client_id'     => $client->id,
+            'client_secret' => $client->secret,
+            'username'      => $request->email,
+            'password'      => $request->password,
+            'scope'         => null,
         ]);
-        return json_decode((string) $token->getBody(), true);
-
-        $response['status'] = 1;
-        $response['message']= "Kindly check your email for verification link;";
-        $response['data']= json_decode((string) $token->getBody(), true);
-        return response()->json($response, 200);
+        // Fire off the internal request.
+        $token = Request::create(
+            'oauth/token',
+            'POST'
+        );
+        return Route::dispatch($token);
     }
 
 

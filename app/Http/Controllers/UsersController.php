@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +14,10 @@ class UsersController extends Controller
     {
         $data = User::find(Auth::id());
 
-        return;
-    }
-
-    public function edit()
-    {
-        $data = User::find(Auth::id());
-        return;
+        return response()->json([
+            "status"=> 1,
+            "message"=> new UserResource($data),
+        ],200);
     }
 
     public function update(UserRequest $request)
@@ -32,6 +30,7 @@ class UsersController extends Controller
         $data->country_id = $request->country_id;
         $data->state_id = $request->state_id;
         $data->image_id = $request->image?$this->image(Auth::id(), $request->image):null;
+
         return response()->json([
             'status'=> 1,
             'message'=> "Updated Successfully!"

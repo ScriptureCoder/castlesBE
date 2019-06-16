@@ -21,3 +21,7 @@ Route::get('/property_status', 'Statics\StaticController@statuses');
 Route::get('/property_types', 'Statics\StaticController@types');
 
 
+Route::group(['prefix'=>'user', 'middleware'=>['auth:api']], function() {
+    Route::get('/', 'UserController@index');
+    Route::post('/', 'UserController@update');
+});
