@@ -18,6 +18,31 @@ use Route;
 
 class RegisterController extends Controller
 {
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+        $credentials = request(['email', 'password']);
+        if(!Auth::attempt($credentials))
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 401);
+        $user = $request->user();
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
+        $token->save();
+
+        return response()->json([
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'expires_at' => Carbon::parse(
+                $tokenResult->token->expires_at
+            )->toDateTimeString()
+        ]);
+    }
+
     public function register(RegisterRequest $request)
     {
         $user= new User();
@@ -44,23 +69,19 @@ class RegisterController extends Controller
 
         Mailer::send($email);
         /*Authenticate user and return token*/
-        $client = Client::where('password_client', 1)->first();
-        /*Authenticate user and return access token*/
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
+        $token->save();
 
-        $request->request->add([
-            'grant_type'    => 'password',
-            'client_id'     => $client->id,
-            'client_secret' => $client->secret,
-            'username'      => $request->email,
-            'password'      => $request->password,
-            'scope'         => null,
+        return response()->json([
+            'status'=> 1,
+            'message'=> 'Kindly check your email for activation link',
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'expires_at' => Carbon::parse(
+                $tokenResult->token->expires_at
+            )->toDateTimeString()
         ]);
-        // Fire off the internal request.
-        $token = Request::create(
-            'oauth/token',
-            'POST'
-        );
-        return Route::dispatch($token);
     }
 
 

@@ -22,7 +22,7 @@ class PropertiesController extends Controller
         if ($request->label) {
             $model = Label::find($request->label)->properties;
         }else{
-            $model = Property::all();
+            $model = Property::where("deleted_at", null);
         }
 
         $query= $model

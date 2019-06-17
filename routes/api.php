@@ -2,6 +2,7 @@
 
 /**Authentication end-points*/
 Route::post('/register', 'Auth\API\RegisterController@register');
+Route::post('/login', 'Auth\API\RegisterController@login');
 Route::post('/resend', 'Auth\API\RegisterController@resend')->middleware(['auth:api']);
 Route::post('/activation/{token}', 'Auth\API\RegisterController@activate')->middleware(['auth:api']);
 Route::get('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
