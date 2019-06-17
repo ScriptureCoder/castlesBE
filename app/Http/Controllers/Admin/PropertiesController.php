@@ -61,17 +61,16 @@ class PropertiesController extends Controller
 
     public function save(PropertyRequest $request)
     {
-
         $data = $request->id? Property::find($request->id) : new Property();
         $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
         $data->title = $request->title;
         $data->slug = str_replace("[^a-zA-Z]","_",$request->title);
         $data->price = $request->price;
         $data->description = $request->description;
-        $data->property_status_id = $request->status;
-        $data->property_type_id = $request->type;
-        $data->featured = $request->featured;
-        $data->image_id = $data->image? $this->image($data->image,$data->user_id):"" ;
+        $data->property_status_id = $request->status_id;
+        $data->property_type_id = $request->type_id;
+        $data->featured = $request->featured === !null;
+        $data->image_id = $request->image? $this->image($request->image,$data->user_id):null ;
         $data->bedrooms = $request->bedrooms;
         $data->bathrooms = $request->bathrooms;
         $data->toilets = $request->toilets;

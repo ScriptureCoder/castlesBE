@@ -34,7 +34,7 @@ class StaticController extends Controller
 
     public function cities($state_id)
     {
-        $data = City::where("state_id", $state_id);
+        $data = City::where("state_id", $state_id)->get();
         return response()->json([
             "status"=> 1,
             "data"=> $data
