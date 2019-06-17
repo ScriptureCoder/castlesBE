@@ -47,3 +47,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
 
     });
 });
+Route::post('/upload', 'Admin\PropertiesController@image');
+
+

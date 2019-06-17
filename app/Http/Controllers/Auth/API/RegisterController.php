@@ -52,6 +52,7 @@ class RegisterController extends Controller
         $user->role_id= $request->role > 2?1:$request->role;
         $user->remember_token= base64_encode(Str::uuid());
         $user->save();
+
         if (!Subscriber::where('email',$request->email)->first()) {
             $sub= new Subscriber();
             $sub->name= $request->username;
