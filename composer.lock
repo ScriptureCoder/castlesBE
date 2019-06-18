@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1edb144240924c63c40be6ce0df44c6",
+    "content-hash": "bc5466eddc80e34f3adb8aa077cb8f5d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -448,16 +448,16 @@
         },
         {
             "name": "fideloper/proxy",
-            "version": "3.3.4",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fideloper/TrustedProxy.git",
-                "reference": "9cdf6f118af58d89764249bbcc7bb260c132924f"
+                "reference": "177c79a2d1f9970f89ee2fb4c12b429af38b6dfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fideloper/TrustedProxy/zipball/9cdf6f118af58d89764249bbcc7bb260c132924f",
-                "reference": "9cdf6f118af58d89764249bbcc7bb260c132924f",
+                "url": "https://api.github.com/repos/fideloper/TrustedProxy/zipball/177c79a2d1f9970f89ee2fb4c12b429af38b6dfb",
+                "reference": "177c79a2d1f9970f89ee2fb4c12b429af38b6dfb",
                 "shasum": ""
             },
             "require": {
@@ -465,15 +465,12 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "illuminate/http": "~5.0",
-                "mockery/mockery": "~0.9.3",
-                "phpunit/phpunit": "^5.7"
+                "illuminate/http": "~5.6",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "^6.0"
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "3.3-dev"
-                },
                 "laravel": {
                     "providers": [
                         "Fideloper\\Proxy\\TrustedProxyServiceProvider"
@@ -501,7 +498,7 @@
                 "proxy",
                 "trusted proxy"
             ],
-            "time": "2017-06-15T17:19:42+00:00"
+            "time": "2019-01-10T14:06:47+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -5362,7 +5359,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0.0"
+        "php": ">=7.1.3"
     },
     "platform-dev": []
 }
