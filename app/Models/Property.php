@@ -39,9 +39,9 @@ class Property extends Model
         return $this->belongsToMany(Feature::class, "property_features");
     }
 
-    public function labels()
+    public function label()
     {
-        return $this->belongsToMany(Label::class, "property_labels");
+        return $this->belongsTo(Label::class);
     }
 
     public function gallery()
@@ -54,9 +54,9 @@ class Property extends Model
         return $this->hasMany(PropertyReview::class);
     }
 
-    public function city()
+    public function locality()
     {
-        return $this->belongsToMany(City::class);
+        return $this->belongsToMany(Locality::class);
     }
 
 }

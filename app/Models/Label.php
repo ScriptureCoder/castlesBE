@@ -8,6 +8,6 @@ class Label extends Model
 {
     public function properties()
     {
-        return $this->belongsToMany(Property::class, "property_labels");
+        return $this->hasMany(Property::class);
     }
 }

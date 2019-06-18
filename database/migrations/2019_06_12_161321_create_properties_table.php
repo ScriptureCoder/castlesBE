@@ -27,15 +27,23 @@ class CreatePropertiesTable extends Migration
             $table->integer("bedrooms")->nullable();
             $table->integer("bathrooms")->nullable();
             $table->integer("toilets")->nullable();
+            $table->boolean("furnished")->default(false);
+            $table->boolean("serviced")->default(false);
+            $table->boolean("parking")->default(false);
+            $table->integer("total_area")->nullable();
+            $table->integer("covered_area")->nullable();
             $table->integer("state_id");
-            $table->integer("city_id");
+            $table->integer("locality_id");
             $table->integer("country_id")->default(160);
             $table->integer("views")->default(0);
             $table->string("address")->nullable();
-            $table->boolean("approved")->default(false);
+            $table->integer("label_id")->nullable();
+            $table->boolean("published")->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
+        \Illuminate\Support\Facades\DB::statement('ALTER TABLE properties AUTO_INCREMENT = 54500;');
+
     }
 
     /**

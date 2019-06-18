@@ -11,7 +11,7 @@ class CityTableSeeder extends Seeder
      */
     public function run()
     {
-        \Illuminate\Support\Facades\DB::table("cities")->insert([
+        \Illuminate\Support\Facades\DB::table("localities")->insert([
             ["state_id"=>25, "name"=>"Abule Egba"],
             ["state_id"=>25, "name"=>"Agbado"],
             ["state_id"=>25, "name"=>"Agbara"],

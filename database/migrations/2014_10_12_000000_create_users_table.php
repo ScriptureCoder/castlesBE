@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->softDeletes();
         });
 
-        \Illuminate\Support\Facades\DB::statement('ALTER TABLE table_name AUTO_INCREMENT = 3500;');
+        \Illuminate\Support\Facades\DB::statement('ALTER TABLE users AUTO_INCREMENT = 3500;');
     }
 
     /**

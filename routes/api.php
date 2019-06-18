@@ -15,7 +15,7 @@ Route::group(['prefix'=>'client'], function() {
 /**Static end-points*/
 Route::get('/countries', 'Statics\StaticController@countries');
 Route::get('/states', 'Statics\StaticController@states');
-Route::get('/cities/{state_id}', 'Statics\StaticController@cities');
+Route::get('/localities/{state_id}', 'Statics\StaticController@localities');
 Route::get('/labels', 'Statics\StaticController@labels');
 Route::get('/features', 'Statics\StaticController@features');
 Route::get('/property_statuses', 'Statics\StaticController@statuses');
@@ -49,6 +49,21 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     /*Users end-points*/
     Route::group(['prefix'=>'users'], function() {
 
+    });
+});
+
+/**Agent end-points*/
+Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function() {
+    /*properties end-points*/
+    Route::group(['prefix'=>'properties'], function() {
+        Route::get('/', 'Agent\PropertiesController@index');
+        Route::post('/save', 'Agent\PropertiesController@save');
+        Route::get('/{id}', 'Agent\PropertiesController@view');
+        Route::get('/{id}/gallery', 'Admin\PropertiesController@gallery');
+        Route::post('/{id}/gallery/add', 'Admin\PropertiesController@addToGallery');
+        Route::post('/{id}/gallery/feature', 'Admin\PropertiesController@featureImage');
+        Route::delete('/{id}/gallery/remove', 'Admin\PropertiesController@removeFromGallery');
+        Route::delete('/property/delete/{ids}', 'Admin\PropertiesController@delete');
     });
 });
 

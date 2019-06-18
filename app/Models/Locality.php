@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class City extends Model
+class Locality extends Model
 {
     public function state()
     {
@@ -15,5 +15,4 @@ class City extends Model
     {
         return $this->hasMany(Property::class);
     }
-
 }

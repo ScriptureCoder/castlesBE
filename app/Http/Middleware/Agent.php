@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Agent
 {
@@ -15,6 +16,11 @@ class Agent
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if (Auth::user()->role_id == 2) {
+            return $next($request);
+        }
+        $response['status']= 0;
+        $response['message']= 'Invalid Access';
+        return response()->json($response, 403);
     }
 }

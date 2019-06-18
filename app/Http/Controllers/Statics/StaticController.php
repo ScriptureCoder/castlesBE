@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Statics;
 
-use App\Models\City;
 use App\Models\Country;
 use App\Models\Feature;
 use App\Models\Label;
+use App\Models\Locality;
 use App\Models\PropertyStatus;
 use App\Models\PropertyType;
 use App\Models\State;
@@ -32,9 +32,9 @@ class StaticController extends Controller
         ]);
     }
 
-    public function cities($state_id)
+    public function localities($state_id)
     {
-        $data = City::where("state_id", $state_id)->get();
+        $data = Locality::where("state_id", $state_id)->get();
         return response()->json([
             "status"=> 1,
             "data"=> $data

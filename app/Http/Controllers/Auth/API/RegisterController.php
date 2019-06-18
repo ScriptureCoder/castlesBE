@@ -47,25 +47,27 @@ class RegisterController extends Controller
     {
         $user= new User();
         $user->username= $request->username;
+        $user->name= $request->name;
         $user->email= $request->email;
         $user->password= bcrypt($request->password);
         $user->role_id= $request->role > 2?1:$request->role;
-        $user->remember_token= base64_encode(Str::uuid());
+        $user->remember_token= Str::random(100);
         $user->save();
 
-        if (!Subscriber::where('email',$request->email)->first()) {
+        if ($request->subscribe && !Subscriber::where('email',$request->email)->first()) {
             $sub= new Subscriber();
-            $sub->name= $request->username;
+            $sub->user_id= $user->id;
             $sub->email= $request->email;
             $sub->save();
         }
 
         /*Send welcome email with activation link*/
         $link = env("APP_URL")."/activate/".$user->remember_token;
+        $fname = explode(" ",$request->name)[0];
         $email = [
             "subject"=> 'Welcome to '.env("APP_NAME"),
             'email' => $request->email,
-            "html"=> "<p>Hello $request->username, <br> kindly click on the link bellow to activate your account <br> <a href='$link'>$link</a></p>"
+            "html"=> "<p>Hello $fname, <br> kindly click on the link bellow to activate your account <br> <a href='$link'>$link</a></p>"
         ];
 
         Mailer::send($email);
@@ -79,9 +81,7 @@ class RegisterController extends Controller
             'message'=> 'Kindly check your email for activation link',
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
+            'expires_at' => $tokenResult->token->expires_at
         ]);
     }
 

@@ -6,9 +6,9 @@ use App\Models\Country;
 use App\Models\Image;
 use App\Models\Role;
 use App\Models\State;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 
-class UserResource extends JsonResource
+class UserResource extends Resource
 {
     /**
      * Transform the resource into an array.

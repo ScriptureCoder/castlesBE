@@ -6,6 +6,7 @@ use App\Http\Requests\PropertyRequest;
 use App\Http\Resources\GalleryResource;
 use App\Http\Resources\PropertiesResource;
 use App\Http\Resources\PropertyResource;
+use App\Models\Feature;
 use App\Models\Image;
 use App\Models\Label;
 use App\Models\Property;
@@ -24,13 +25,7 @@ class PropertiesController extends Controller
         $type = $request->type;
         $approved = $request->approved;
 
-        if ($request->label) {
-            $model = Label::find($request->label)->properties;
-        }else{
-            $model = Property::where("deleted_at", null);
-        }
-
-        $query= $model
+        $query= Property::where("deleted_at", null)
             ->when($status, function ($query) use ($status) {
                 return $query->where('property_status_id', $status);})
             ->when($type, function ($query) use ($type) {
@@ -64,14 +59,12 @@ class PropertiesController extends Controller
         $data = $request->id? Property::find($request->id) : new Property();
         $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
         $data->title = $request->title;
-        $data->slug = preg_replace("/[^a-zA-Z]/","-",$request->title);
+        $data->slug = preg_replace("/[^a-zA-Z]/","-",strtolower($request->title));
         $data->price = $request->price;
         $data->description = $request->description;
         $data->property_status_id = $request->status_id;
         $data->property_type_id = $request->type_id;
         $data->featured = $request->featured === !null;
-        if ($request->image)
-            $data->image_id = $this->image($request->image,$data->user_id);
         $data->bedrooms = $request->bedrooms;
         $data->bathrooms = $request->bathrooms;
         $data->toilets = $request->toilets;
@@ -123,8 +116,14 @@ class PropertiesController extends Controller
 
     public function removeFromGallery($id)
     {
-        $data = PropertyGallery::find($id)->image->path;
-        return Storage::delete($data);
+        $data = PropertyGallery::find($id)->image;
+        $data()->delete();
+        Storage::delete($data->path);
+
+        return response()->json([
+            "status"=> 1,
+            "message"=> "Remove successfully!"
+        ]);
     }
 
     public function addToGallery(Request $request,$property_id)
