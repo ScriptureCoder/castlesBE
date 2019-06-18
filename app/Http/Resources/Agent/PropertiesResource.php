@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Agent;
 
 use App\Models\Property;
-use App\User;
 use Illuminate\Http\Resources\Json\Resource;
 
 class PropertiesResource extends Resource
@@ -16,17 +15,10 @@ class PropertiesResource extends Resource
      */
     public function toArray($request)
     {
-        $agent = User::find($this->user_id);
         $property = Property::find($this->id);
 
         return [
             "id"=> $this->id,
-            "agent"=> [
-                "id" => $agent->id,
-                "name"=> $agent->name,
-                "phone"=> $agent->phone,
-                "username"=> $agent->username
-            ],
             "title" => $this->title,
             "slug"=> $this->slug,
             "price"=> $this->price,

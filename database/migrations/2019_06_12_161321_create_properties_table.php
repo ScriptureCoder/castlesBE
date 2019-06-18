@@ -29,7 +29,7 @@ class CreatePropertiesTable extends Migration
             $table->integer("toilets")->nullable();
             $table->boolean("furnished")->default(false);
             $table->boolean("serviced")->default(false);
-            $table->boolean("parking")->default(false);
+            $table->integer("parking")->nullable();
             $table->integer("total_area")->nullable();
             $table->integer("covered_area")->nullable();
             $table->integer("state_id");

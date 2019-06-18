@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Agent;
 
 use App\Http\Requests\PropertyRequest;
+use App\Http\Resources\Agent\PropertiesResource;
 use App\Models\Property;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,8 +14,15 @@ class PropertiesController extends Controller
 
     public function index()
     {
+        $data = Auth::user()->properties()->paginate(request("paginate")?request("paginate"):10);
 
-        return;
+        $data= collect($data);
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> new PropertiesResource($data),
+            "pagination"=> $data
+        ],200);
     }
 
 
@@ -40,7 +48,7 @@ class PropertiesController extends Controller
         $data->toilets = $request->toilets;
         $data->furnished = $request->furnished === !null;
         $data->serviced = $request->serviced === !null;
-        $data->parking = $request->parking === !null;
+        $data->parking = $request->parking;
         $data->total_area = $request->total_area;
         $data->covered_area = $request->covered_area;
         $data->address = $request->address;

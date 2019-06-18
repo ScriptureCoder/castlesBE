@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use App\Models\Image;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 
-class GalleryResource extends JsonResource
+class GalleryResource extends Resource
 {
     /**
      * Transform the resource into an array.

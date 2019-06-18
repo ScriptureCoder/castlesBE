@@ -11,12 +11,12 @@ class Property extends Model
 
     public function status()
     {
-        return $this->belongsTo(PropertyStatus::class);
+        return $this->belongsTo(PropertyStatus::class,"property_status_id");
     }
 
     public function type()
     {
-        return $this->belongsTo(PropertyType::class);
+        return $this->belongsTo(PropertyType::class, "property_type_id");
     }
 
     public function image()
@@ -56,7 +56,7 @@ class Property extends Model
 
     public function locality()
     {
-        return $this->belongsToMany(Locality::class);
+        return $this->belongsTo(Locality::class);
     }
 
 }

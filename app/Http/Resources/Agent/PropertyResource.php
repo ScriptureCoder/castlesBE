@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Agent;
 
+use App\Http\Resources\FeaturesResource;
+use App\Http\Resources\GalleryResource;
 use App\Models\Property;
-use App\User;
 use Illuminate\Http\Resources\Json\Resource;
 
-class PropertiesResource extends Resource
+class PropertyResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -16,21 +17,14 @@ class PropertiesResource extends Resource
      */
     public function toArray($request)
     {
-        $agent = User::find($this->user_id);
         $property = Property::find($this->id);
 
         return [
             "id"=> $this->id,
-            "agent"=> [
-                "id" => $agent->id,
-                "name"=> $agent->name,
-                "phone"=> $agent->phone,
-                "username"=> $agent->username
-            ],
             "title" => $this->title,
             "slug"=> $this->slug,
             "price"=> $this->price,
-            "description"=> str_limit($this->description,"150","..."),
+            "description"=> $this->description,
             "status"=> $this->property_status_id?$property->status->name:"",
             "type"=> $this->property_type_id?$property->type->name:"",
             "featured"=> !!$this->featured,
@@ -43,11 +37,15 @@ class PropertiesResource extends Resource
             "serviced"=> !!$this->serviced,
             "parking"=> $this->parking,
             "total_area"=> $this->total_area,
+            "covered_area"=> $this->covered_area,
+            "state"=> $this->state_id? $property->state->name:"",
             "country"=> $this->state_id? $property->country->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
-            "published"=> !!$this->published,
+            "published"=> $this->published,
             "views"=> $this->views,
+            "pictures"=> GalleryResource::collection($property->gallery),
+            "features"=> FeaturesResource::collection($property->features),
             "created_at"=> $this->created_at->diffForHumans()
         ];
     }
