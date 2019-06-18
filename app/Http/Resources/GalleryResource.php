@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\Resource;
+use App\Models\Image;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class GalleryResource extends Resource
+class GalleryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +15,9 @@ class GalleryResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "id"=> $this->id,
+            "image"=> env("STORAGE") !== "local"? env("STORAGE_PATH").Image::find($this->image_id)->path:url("/storage/".Image::find($this->image_id)->path),
+        ];
     }
 }

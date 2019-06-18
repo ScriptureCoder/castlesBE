@@ -31,6 +31,8 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        \Illuminate\Support\Facades\DB::statement('ALTER TABLE table_name AUTO_INCREMENT = 3500;');
     }
 
     /**

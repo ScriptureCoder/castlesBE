@@ -2,6 +2,7 @@
 
 /**Authentication end-points*/
 Route::post('/register', 'Auth\API\RegisterController@register');
+Route::post('/login', 'Auth\API\RegisterController@login');
 Route::post('/resend', 'Auth\API\RegisterController@resend')->middleware(['auth:api']);
 Route::post('/activation/{token}', 'Auth\API\RegisterController@activate')->middleware(['auth:api']);
 Route::get('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
@@ -17,7 +18,7 @@ Route::get('/states', 'Statics\StaticController@states');
 Route::get('/cities/{state_id}', 'Statics\StaticController@cities');
 Route::get('/labels', 'Statics\StaticController@labels');
 Route::get('/features', 'Statics\StaticController@features');
-Route::get('/property_status', 'Statics\StaticController@statuses');
+Route::get('/property_statuses', 'Statics\StaticController@statuses');
 Route::get('/property_types', 'Statics\StaticController@types');
 
 
@@ -32,9 +33,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     /*Properties end-points*/
     Route::group(['prefix'=>'properties'], function() {
         Route::get('/', 'Admin\PropertiesController@index');
+        Route::post('/save', 'Admin\PropertiesController@save');
         Route::get('/trash', 'Admin\PropertiesController@trash');
         Route::get('/{id}', 'Admin\PropertiesController@view');
-        Route::post('/', 'Admin\PropertiesController@save');
+        Route::get('/{id}/gallery', 'Admin\PropertiesController@gallery');
+        Route::post('/{id}/gallery/add', 'Admin\PropertiesController@addToGallery');
+        Route::post('/{id}/gallery/feature', 'Admin\PropertiesController@featureImage');
+        Route::delete('/{id}/gallery/remove', 'Admin\PropertiesController@removeFromGallery');
         Route::post('/approve/{ids}', 'Admin\PropertiesController@approve');
         Route::post('/disapprove/{ids}', 'Admin\PropertiesController@disapprove');
         Route::delete('/property/delete/{ids}', 'Admin\PropertiesController@delete');
@@ -46,3 +51,5 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
 
     });
 });
+
+

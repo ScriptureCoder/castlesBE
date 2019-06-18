@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\PropertyRequest;
+use App\Http\Resources\GalleryResource;
 use App\Http\Resources\PropertiesResource;
 use App\Http\Resources\PropertyResource;
+use App\Models\Image;
 use App\Models\Label;
 use App\Models\Property;
+use App\Models\PropertyGallery;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PropertiesController extends Controller
 {
@@ -22,7 +27,7 @@ class PropertiesController extends Controller
         if ($request->label) {
             $model = Label::find($request->label)->properties;
         }else{
-            $model = Property::all();
+            $model = Property::where("deleted_at", null);
         }
 
         $query= $model
@@ -56,17 +61,17 @@ class PropertiesController extends Controller
 
     public function save(PropertyRequest $request)
     {
-
         $data = $request->id? Property::find($request->id) : new Property();
         $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
         $data->title = $request->title;
-        $data->slug = str_replace("[^a-zA-Z]","_",$request->title);
+        $data->slug = preg_replace("/[^a-zA-Z]/","-",$request->title);
         $data->price = $request->price;
         $data->description = $request->description;
-        $data->property_status_id = $request->status;
-        $data->property_type_id = $request->type;
-        $data->featured = $request->featured;
-        $data->image_id = $request->image;
+        $data->property_status_id = $request->status_id;
+        $data->property_type_id = $request->type_id;
+        $data->featured = $request->featured === !null;
+        if ($request->image)
+            $data->image_id = $this->image($request->image,$data->user_id);
         $data->bedrooms = $request->bedrooms;
         $data->bathrooms = $request->bathrooms;
         $data->toilets = $request->toilets;
@@ -82,20 +87,101 @@ class PropertiesController extends Controller
         ],200);
     }
 
-    public function delete($id)
+    public static function image($request, $user)
     {
-        $data = Property::findOrFail($id);
-        $data->delete();
+        $image = Storage::disk(env("STORAGE"))->put('/properties', $request);
+        $data = new Image();
+        $data->category = "properties";
+        $data->path= $image;
+        $data->user_id= $user;
+        $data->save();
+
+        return $data->id;
+    }
+
+    public function featureImage(Request $request)
+    {
+        $image = Image::findOrFail($request->image_id)->path;
+        $data = Property::find($request->property_id);
+        $data->image_id = $image;
+        $data->save();
+
+        return response()->json([
+            "status"=> 1,
+            "message"=> "Image featured successfully!"
+        ]);
+    }
+
+    public function gallery($property_id)
+    {
+        $data = Property::findorFind($property_id)->gallery;
+        return response()->json([
+            "status"=> 1,
+            "data"=> GalleryResource::collection($data)
+        ]);
+    }
+
+    public function removeFromGallery($id)
+    {
+        $data = PropertyGallery::find($id)->image->path;
+        return Storage::delete($data);
+    }
+
+    public function addToGallery(Request $request,$property_id)
+    {
+        if (is_array($request->image)){
+            foreach ($request->image as $image) {
+                $data = new PropertyGallery();
+                $data->image_id= $this->image($image,Auth::id());
+                $data->property_id= $property_id;
+                $data->save();
+            }
+        }else{
+            $data = new PropertyGallery();
+            $data->image_id= $this->image($request->image,Auth::id());
+            $data->property_id= $property_id;
+            $data->save();
+        }
+
+        return response()->json([
+            "status"=> 1,
+            "message"=> "Uploaded Successfully!",
+        ],200);
+    }
+
+
+
+    public function delete($ids)
+    {
+        if (is_array($ids)) {
+            foreach ($ids as $id) {
+                $data = Property::findOrFail($id);
+                $data->delete();
+            }
+        }else{
+            $data = Property::findOrFail($ids);
+            $data->delete();
+        }
+
+
         return response()->json([
             "status"=> 1,
             "message"=> "Deleted Successfully!",
         ],200);
     }
 
-    public function destroy($id)
+    public function destroy($ids)
     {
-        $data = Property::onlyTrashed()->findOrFail($id);
-        $data->forceDelete();
+        if (is_array($ids)){
+            foreach ($ids as $id) {
+                $data = Property::onlyTrashed()->findOrFail($id);
+                $data->forceDelete();
+            }
+        }else{
+            $data = Property::onlyTrashed()->findOrFail($ids);
+            $data->forceDelete();
+        }
+
         return response()->json([
             "status"=> 1,
             "message"=> "Deleted Successfully!",
