@@ -28,7 +28,7 @@ class UserResource extends Resource
             'username'=> $this->username,
             'email'=> $this->email,
             'image'=> $image?$image->url:"",
-            'isVerified'=> $this->email_verified_at === null,
+            'isVerified'=> $this->email_verified_at == !null,
             'role'=> ["id"=>$this->role_id, "name"=> Role::find($this->role_id)->name],
             'address'=> $this->address,
             'country'=> ['id'=>$this->country_id, 'name'=>$country?$country->name:""],

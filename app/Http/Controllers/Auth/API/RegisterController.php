@@ -114,7 +114,7 @@ class RegisterController extends Controller
         $link = env("APP_URL")."/activate/".$user->remember_token;
         $email = [
             "subject"=> 'Welcome to'.env("APP_NAME").'confirmation code',
-            "html"=> "<p>Hello $user->username, <br> kindly follow the link bellow to activate your account <br> <a href='$link'>$link</a></p>"
+            "html"=> "<p>Hello $user->username, <br> kindly follow the link bellow to verify your account <br> <a href='$link'>$link</a></p>"
         ];
         Mailer::send($email);
 

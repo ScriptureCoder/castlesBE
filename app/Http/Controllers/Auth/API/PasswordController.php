@@ -17,17 +17,35 @@ class PasswordController extends Controller
 {
     public function forgotPassword(Request $request)
     {
-        $user = User::where("email", $request->email);
+        $user = User::where("email", $request->email)->first();
         if ($user){
             $token = new PasswordReset();
             $token->user_id = $user->id;
-            $token->token = base64_encode(Str::uuid());
-            $token->expired_at = new Carbon("+24hrs");
+            $token->token = Str::random(100);
+            $token->expired_at = new Carbon("+24 hours");
             $token->save();
+            $link = env("APP_URL")."/reset_password/".$token->token;
+
             $data = [
                 'email' => $request->email,
                 'subject' => $request->subject,
-                'html'=> "<p> Hello <a href='$token->token'></a></p>"
+                'html'=> "
+                <p><strong>Hello!</strong></p>
+            <p>
+                You are receiving this email because we received a password reset request for your account.
+            </p>
+
+            <div>
+                    <a onmouseover='this.style.border=\"white\"' style=\"background-color: blue; border: none; color: white; padding: 10px 30px; text-align: center; text-decoration: none; margin: 5px 0 5px 0;\" href=\"{{$link}}\" target=\"_blank\">Reset Password</a>
+            </div>
+
+
+            <p>If you did not request a password reset, no further action is required.</p>
+
+            <p>Regards,</p>
+
+            <h6>If you're having trouble clicking the \"Reset Password\" button, copy and paste the URL below into your web browser:<br><a href=\"{{$link}}\">{{$link}}</a></h6>
+                "
             ];
 
             Mailer::send($data);
@@ -41,18 +59,24 @@ class PasswordController extends Controller
         return response()->json($response, 200);
     }
 
-    public function resetPassword(ResetRequest $request)
+    public function resetPassword(ResetRequest $request, $param)
     {
-        $token = PasswordReset::where("token", $request->token)->where('expired_at','>=', Carbon::now());
+        $token = PasswordReset::where("token", $param)->where('expired_at','>=', Carbon::now())->first();
+
         if ($token){
             $data = User::find($token->user_id);
             $data->password = bcrypt($request->password);
             $data->save();
+            $token->delete();
 
             $response['status'] = 1;
             $response['message']= "Password changed!, kindly login to continue!";
             return response()->json($response, 200);
         }
+
+        $response['status'] = 0;
+        $response['error']= "Invalid token!";
+        return response()->json($response, 422);
 
     }
 
@@ -73,6 +97,7 @@ class PasswordController extends Controller
             $response['message']= "Password changed successfully!";
             return response()->json($response, 200);
         }
+
         $response['status'] = 0;
         $response['error']= "Incorrect old password!";
         return response()->json($response, 422);

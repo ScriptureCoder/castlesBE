@@ -69,12 +69,6 @@ class PropertiesController extends Controller
         foreach ($state as $st){
             $data->push(new StateFilter($st));
         }
-        /*foreach ($state as $st){
-            $locality = Locality::where("state_id", $st->id)->get();
-            foreach ($locality as $lo){
-                $data->push(new LocalityFilter($lo));
-            }
-        }*/
 
         foreach ($locality as $lo){
             $data->push(new LocalityFilter($lo));

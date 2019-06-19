@@ -4,10 +4,10 @@
 Route::post('/register', 'Auth\API\RegisterController@register');
 Route::post('/login', 'Auth\API\RegisterController@login');
 Route::post('/resend', 'Auth\API\RegisterController@resend')->middleware(['auth:api']);
-Route::post('/activation/{token}', 'Auth\API\RegisterController@activate')->middleware(['auth:api']);
-Route::get('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
-Route::post('/reset_password', 'Auth\API\PasswordController@resetPassword');
-Route::post('/change_password', 'Auth\API\PasswordController@resetPassword')->middleware(['auth:api']);
+Route::post('/activate/{token}', 'Auth\API\RegisterController@activate')->middleware(['auth:api']);
+Route::post('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
+Route::post('/change_password', 'Auth\API\PasswordController@changePassword')->middleware(['auth:api']);
+Route::post('/reset_password/{token}', 'Auth\API\PasswordController@resetPassword');
 
 Route::group(['prefix'=>'client'], function() {
 });
@@ -36,7 +36,6 @@ Route::group(['prefix'=>'user', 'middleware'=>['auth:api']], function() {
 
 /**Admin end-points*/
 Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function() {
-
     /*Properties end-points*/
     Route::group(['prefix'=>'properties'], function() {
         Route::get('/', 'Admin\PropertiesController@index');
@@ -61,6 +60,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
 
 /**Agent end-points*/
 Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function() {
+
     /*properties end-points*/
     Route::group(['prefix'=>'properties'], function() {
         Route::get('/', 'Agent\PropertiesController@index');
@@ -73,5 +73,7 @@ Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function()
         Route::delete('/delete/{id}', 'Agent\PropertiesController@delete');
     });
 });
+
+
 
 
