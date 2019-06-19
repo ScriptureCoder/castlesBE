@@ -12,6 +12,13 @@ Route::post('/change_password', 'Auth\API\PasswordController@resetPassword')->mi
 Route::group(['prefix'=>'client'], function() {
 });
 
+/**Properties listing and search*/
+Route::group(['prefix'=>'properties'], function() {
+    Route::get('/', 'PropertiesController@index');
+    Route::get('/filter', 'PropertiesController@filter');
+    Route::get('/{slug}', 'PropertiesController@view');
+});
+
 /**Static end-points*/
 Route::get('/countries', 'Statics\StaticController@countries');
 Route::get('/states', 'Statics\StaticController@states');
@@ -59,11 +66,11 @@ Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function()
         Route::get('/', 'Agent\PropertiesController@index');
         Route::post('/save', 'Agent\PropertiesController@save');
         Route::get('/{id}', 'Agent\PropertiesController@view');
-        Route::get('/{id}/gallery', 'Admin\PropertiesController@gallery');
-        Route::post('/{id}/gallery/add', 'Admin\PropertiesController@addToGallery');
-        Route::post('/{id}/gallery/feature', 'Admin\PropertiesController@featureImage');
-        Route::delete('/{id}/gallery/remove', 'Admin\PropertiesController@removeFromGallery');
-        Route::delete('/property/delete/{ids}', 'Admin\PropertiesController@delete');
+        Route::get('/{id}/pictures', 'Agent\PropertiesController@gallery');
+        Route::post('/{id}/upload', 'Agent\PropertiesController@addToGallery');
+        Route::post('/{id}/feature', 'Agent\PropertiesController@featureImage');
+        Route::delete('/{id}/picture/delete/{image}', 'Agent\PropertiesController@removeFromGallery');
+        Route::delete('/delete/{id}', 'Agent\PropertiesController@delete');
     });
 });
 

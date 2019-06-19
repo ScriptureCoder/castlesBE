@@ -3,11 +3,11 @@
 namespace App\Http\Resources;
 
 use App\Models\Image;
+use App\Models\Property;
 use App\Models\PropertyStatus;
 use App\Models\PropertyType;
 use App\User;
 use Illuminate\Http\Resources\Json\Resource;
-use phpDocumentor\Reflection\DocBlock\Tags\Property;
 
 class PropertyResource extends Resource
 {
@@ -28,7 +28,8 @@ class PropertyResource extends Resource
                 "id" => $agent->id,
                 "name"=> $agent->name,
                 "phone"=> $agent->phone,
-                "username"=> $agent->username
+                "username"=> $agent->username,
+                "email"=> $agent->email
             ],
             "slug"=> $this->slug,
             "price"=> $this->price,
@@ -37,7 +38,7 @@ class PropertyResource extends Resource
             "type"=> $this->property_type_id?$property->type->name:"",
             "featured"=> !!$this->featured,
             "label"=> $this->label_id? $property->label->name:"",
-            "image"=> $this->image_id? $property->image->url:"",
+            "image"=> $this->image_id? env("STORAGE") !== "local"? env("STORAGE_PATH")."".$property->image->path:url("/storage/".$property->image->path):"",
             "bedrooms"=> $this->bedrooms,
             "bathrooms"=> $this->bathrooms,
             "toilets"=> $this->toilets,
@@ -50,7 +51,6 @@ class PropertyResource extends Resource
             "country"=> $this->state_id? $property->country->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
-            "published"=> $this->published,
             "views"=> $this->views,
             "pictures"=> GalleryResource::collection($property->gallery),
             "features"=> FeaturesResource::collection($property->features),

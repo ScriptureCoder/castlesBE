@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\ImageRequest;
 use App\Http\Requests\PropertyRequest;
 use App\Http\Resources\GalleryResource;
 use App\Http\Resources\PropertiesResource;
 use App\Http\Resources\PropertyResource;
-use App\Models\Feature;
 use App\Models\Image;
-use App\Models\Label;
 use App\Models\Property;
 use App\Models\PropertyGallery;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class PropertiesController extends Controller
 {
@@ -92,11 +90,11 @@ class PropertiesController extends Controller
         return $data->id;
     }
 
-    public function featureImage(Request $request)
+    public function featureImage(Request $request, $id)
     {
-        $image = Image::findOrFail($request->image_id)->path;
-        $data = Property::find($request->property_id);
-        $data->image_id = $image;
+        $image = Image::findOrFail($request->image_id);
+        $data = Property::findOrFail($id);
+        $data->image_id = $image->id;
         $data->save();
 
         return response()->json([
@@ -107,47 +105,60 @@ class PropertiesController extends Controller
 
     public function gallery($property_id)
     {
-        $data = Property::findorFind($property_id)->gallery;
+        $data = Property::findOrFail($property_id)->gallery;
         return response()->json([
             "status"=> 1,
             "data"=> GalleryResource::collection($data)
         ]);
     }
 
-    public function removeFromGallery($id)
+    public function removeFromGallery($id, $image)
     {
-        $data = PropertyGallery::find($id)->image;
-        $data()->delete();
-        Storage::delete($data->path);
-
+        $property= Property::findOrFail($id);
+        $data = PropertyGallery::where("image_id", $image)->where("property_id",$id);
+        Storage::delete($data->first()->image->path);
+        $data->first()->image()->delete();
+        $data->delete();
+        if ($property->image_id == $image){
+            $property->image_id = null;
+            $property->save();
+        }
         return response()->json([
             "status"=> 1,
             "message"=> "Remove successfully!"
         ]);
     }
 
-    public function addToGallery(Request $request,$property_id)
+    public function addToGallery(ImageRequest $request,$property_id)
     {
-        if (is_array($request->image)){
-            foreach ($request->image as $image) {
+        $property = Property::findOrFail($property_id);
+
+        if (is_array($request->images)){
+            foreach ($request->images as $image) {
                 $data = new PropertyGallery();
                 $data->image_id= $this->image($image,Auth::id());
                 $data->property_id= $property_id;
                 $data->save();
+                if (!$property->image)
+                    $property->image_id= $data->image_id;
+                    $property->save();
             }
+            return response()->json([
+                "status"=> 1,
+                "message"=> count($request->images)." Uploaded Successfully!",
+            ],200);
         }else{
             $data = new PropertyGallery();
             $data->image_id= $this->image($request->image,Auth::id());
             $data->property_id= $property_id;
             $data->save();
+            return response()->json([
+                "status"=> 1,
+                "message"=> "1 Uploaded Successfully!",
+            ],200);
         }
 
-        return response()->json([
-            "status"=> 1,
-            "message"=> "Uploaded Successfully!",
-        ],200);
     }
-
 
 
     public function delete($ids)

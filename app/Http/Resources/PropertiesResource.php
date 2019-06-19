@@ -46,7 +46,6 @@ class PropertiesResource extends Resource
             "country"=> $this->state_id? $property->country->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
-            "published"=> !!$this->published,
             "views"=> $this->views,
             "created_at"=> $this->created_at->diffForHumans()
         ];
