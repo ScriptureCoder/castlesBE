@@ -8,8 +8,13 @@ use App\Http\Resources\PropertyResource;
 use App\Http\Resources\StateFilter;
 use App\Models\Locality;
 use App\Models\Property;
+use App\Models\PropertyView;
+use App\Models\SavedProperty;
 use App\Models\State;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Route;
 
 class PropertiesController extends Controller
 {
@@ -57,7 +62,6 @@ class PropertiesController extends Controller
         return response()->json([
             "status"=> 1,
             "data"=> $data,
-            "count"=> $query->count(),
         ],200);
     }
 
@@ -80,11 +84,18 @@ class PropertiesController extends Controller
         ]);
     }
 
-    public function view($slug)
+    public function view(Request $request, $slug)
     {
         $data = Property::where("slug",$slug)->first();
-        $data->views++;
-        $data->save();
+
+        /*Save views for analytics*/
+        $view = PropertyView::whereDate('created_at', '=', date('Y-m-d'))->first();
+        if (!$view)
+            $view = new PropertyView();
+        $view->property_id = $data->id;
+        $view->views++;
+        $view->save();
+
         if ($data){
             return response()->json([
                 "status"=> 1,
@@ -96,4 +107,39 @@ class PropertiesController extends Controller
             "message"=> "Not Found",
         ],404);
     }
+
+    public function save(Request $request)
+    {
+        $data =  SavedProperty::where("user_id", auth()->id())->where("property_id", $request->property_id)->first();
+        if ($data){
+            $data->delete();
+
+            return response()->json([
+                "status"=> 1,
+                "message"=> "Removed Successfully!",
+            ],200);
+        }else{
+            $data = new SavedProperty();
+            $data->user_id = auth()->id();
+            $data->property_id = $request->property_id;
+            $data->save();
+
+            return response()->json([
+                "status"=> 1,
+                "message"=> "Saved Successfully!",
+            ],200);
+        }
+
+    }
+
+    public function viewSaved(Request $request)
+    {
+        $data = Auth::user()->savedProperties()->paginate($request->paginate?$request->paginate:10);
+        PropertiesResource::collection($data);
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+    }
+
 }

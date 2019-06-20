@@ -51,7 +51,6 @@ class PropertyResource extends Resource
             "country"=> $this->state_id? $property->country->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
-            "views"=> $this->views,
             "pictures"=> GalleryResource::collection($property->gallery),
             "features"=> FeaturesResource::collection($property->features),
             "created_at"=> $this->created_at->diffForHumans()

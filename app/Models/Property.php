@@ -54,6 +54,11 @@ class Property extends Model
         return $this->hasMany(PropertyReview::class);
     }
 
+    public function views()
+    {
+        return $this->hasMany(PropertyView::class);
+    }
+
     public function locality()
     {
         return $this->belongsTo(Locality::class);

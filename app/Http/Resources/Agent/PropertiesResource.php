@@ -39,7 +39,7 @@ class PropertiesResource extends Resource
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
             "published"=> !!$this->published,
-            "views"=> $this->views,
+            "views"=> $property->views()->sum("views"),
             "created_at"=> $this->created_at->diffForHumans()
         ];
     }

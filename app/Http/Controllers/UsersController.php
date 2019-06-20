@@ -18,25 +18,39 @@ class UsersController extends Controller
 
         return response()->json([
             "status"=> 1,
-            "message"=> new UserResource($data),
+            "data"=> new UserResource($data),
         ],200);
     }
 
     public function update(UserRequest $request)
     {
+        $username = User::where('username', $request->username)->first();
         $data = User::find(Auth::id());
-        $data->name = $request->name;
-        $data->username = $request->username;
-        $data->address = $request->address;
-        $data->phone = $request->phone;
-        $data->country_id = $request->country_id;
-        $data->state_id = $request->state_id;
-        $data->save();
+        if (!$username || $data->id === $username->id){
+            $data->name = $request->name;
+            $data->username = $request->username;
+            $data->address = $request->address;
+            $data->phone = $request->phone;
+            $data->country_id = $request->country_id;
+            $data->state_id = $request->state_id;
+            $data->save();
+
+            return response()->json([
+                'status'=> 1,
+                'message'=> "Updated Successfully!"
+            ]);
+        }
 
         return response()->json([
-            'status'=> 1,
-            'message'=> "Updated Successfully!"
+            'status'=> 0,
+            'errors'=> ["username"=>["Username already exists"]]
         ]);
+
+    }
+
+    public function check()
+    {
+        return Auth::id();
     }
 
     public function picture()
@@ -44,7 +58,11 @@ class UsersController extends Controller
         $data = User::find(Auth::id());
         $data->image_id = $this->image(request("image"), Auth::id());
         $data->save();
-        return;
+
+        return response()->json([
+            "status"=> 1,
+            "message"=> "Uploaded Successfully!",
+        ],200);
     }
 
     public static function image($request, $user)

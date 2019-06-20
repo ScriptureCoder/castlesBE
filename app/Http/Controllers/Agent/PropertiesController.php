@@ -10,6 +10,7 @@ use App\Http\Resources\GalleryResource;
 use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyGallery;
+use App\Models\PropertyView;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -21,11 +22,10 @@ class PropertiesController extends Controller
     public function index()
     {
         $data = Auth::user()->properties()->paginate(request("paginate")?request("paginate"):10);
-
+        PropertiesResource::collection($data);
         return response()->json([
             "status"=> 1,
-            "data"=> PropertiesResource::collection($data),
-            "pagination"=> $data
+            "data"=> $data,
         ],200);
     }
 
@@ -161,7 +161,5 @@ class PropertiesController extends Controller
             "message"=> "Deleted Successfully!",
         ],200);
     }
-
-
 
 }

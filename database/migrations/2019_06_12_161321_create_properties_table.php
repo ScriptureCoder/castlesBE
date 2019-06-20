@@ -35,7 +35,6 @@ class CreatePropertiesTable extends Migration
             $table->integer("state_id");
             $table->integer("locality_id");
             $table->integer("country_id")->default(160);
-            $table->integer("views")->default(0);
             $table->string("address")->nullable();
             $table->integer("label_id")->nullable();
             $table->boolean("published")->default(false);

@@ -173,7 +173,6 @@ class PropertiesController extends Controller
             $data->delete();
         }
 
-
         return response()->json([
             "status"=> 1,
             "message"=> "Deleted Successfully!",

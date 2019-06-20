@@ -33,6 +33,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public function image()
@@ -59,6 +60,11 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function savedProperties()
+    {
+        return $this->belongsToMany(Property::class, 'saved_properties');
     }
 
 

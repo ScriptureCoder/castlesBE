@@ -3,6 +3,7 @@
 /**Authentication end-points*/
 Route::post('/register', 'Auth\API\RegisterController@register');
 Route::post('/login', 'Auth\API\RegisterController@login');
+Route::post('/oauth', 'Auth\API\RegisterController@oauth');
 Route::post('/resend', 'Auth\API\RegisterController@resend')->middleware(['auth:api']);
 Route::post('/activate/{token}', 'Auth\API\RegisterController@activate')->middleware(['auth:api']);
 Route::post('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
@@ -16,8 +17,11 @@ Route::group(['prefix'=>'client'], function() {
 Route::group(['prefix'=>'properties'], function() {
     Route::get('/', 'PropertiesController@index');
     Route::get('/filter', 'PropertiesController@filter');
-    Route::get('/{slug}', 'PropertiesController@view');
+    Route::get('/{slug}', 'PropertiesController@view')->middleware(['if_auth']);
 });
+Route::get('/saved_properties', 'PropertiesController@viewSaved')->middleware(['auth:api']);
+Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:api']);
+
 
 /**Static end-points*/
 Route::get('/countries', 'Statics\StaticController@countries');
@@ -30,8 +34,10 @@ Route::get('/property_types', 'Statics\StaticController@types');
 
 
 Route::group(['prefix'=>'user', 'middleware'=>['auth:api']], function() {
-    Route::get('/', 'UserController@index');
-    Route::post('/', 'UserController@update');
+    Route::get('/', 'UsersController@index');
+    Route::post('/', 'UsersController@update');
+    Route::get('/check', 'UsersController@check');
+    Route::post('/image', 'UsersController@picture');
 });
 
 /**Admin end-points*/
@@ -54,7 +60,14 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
 
     /*Users end-points*/
     Route::group(['prefix'=>'users'], function() {
-
+        Route::get('/', 'Admin\UsersController@index');
+        Route::post('/create', 'Admin\UsersController@create');
+        Route::get('/suspended', 'Admin\UsersController@suspended');
+        Route::post('/{id}/activate', 'Admin\UsersController@activate');
+        Route::post('/{id}/suspend', 'Admin\UsersController@suspend');
+        Route::delete('/{id}/delete', 'Admin\UsersController@delete');
+        Route::post('/{id}/restore', 'Admin\UsersController@restore');
+        Route::get('/{id}', 'Admin\UsersController@view');
     });
 });
 
