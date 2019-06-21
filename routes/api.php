@@ -19,8 +19,11 @@ Route::group(['prefix'=>'properties'], function() {
     Route::get('/filter', 'PropertiesController@filter');
     Route::get('/{slug}', 'PropertiesController@view')->middleware(['if_auth']);
 });
+
 Route::get('/saved_properties', 'PropertiesController@viewSaved')->middleware(['auth:api']);
 Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:api']);
+Route::post('/report_property', 'PropertiesController@report')->middleware(['auth:api']);
+Route::post('/request_property', 'PropertiesController@request')->middleware(['if_auth']);
 
 
 /**Static end-points*/
@@ -43,9 +46,11 @@ Route::group(['prefix'=>'user', 'middleware'=>['auth:api']], function() {
 /**Admin end-points*/
 Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function() {
     /*Properties end-points*/
+
     Route::group(['prefix'=>'properties'], function() {
         Route::get('/', 'Admin\PropertiesController@index');
         Route::post('/save', 'Admin\PropertiesController@save');
+        Route::post('/save/multiple', 'Admin\PropertiesController@multiple');
         Route::get('/trash', 'Admin\PropertiesController@trash');
         Route::get('/{id}', 'Admin\PropertiesController@view');
         Route::get('/{id}/gallery', 'Admin\PropertiesController@gallery');
@@ -69,11 +74,17 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
         Route::post('/{id}/restore', 'Admin\UsersController@restore');
         Route::get('/{id}', 'Admin\UsersController@view');
     });
+
+    /*Analytics end-points*/
+    Route::group(['prefix'=>'analytics'], function() {
+        Route::get('/', 'Admin\AnalyticsController@index');
+        Route::get('/project/{id}', 'Admin\AnalyticsController@projectViews');
+        Route::get('/project', 'Admin\AnalyticsController@project');
+    });
 });
 
 /**Agent end-points*/
 Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function() {
-
     /*properties end-points*/
     Route::group(['prefix'=>'properties'], function() {
         Route::get('/', 'Agent\PropertiesController@index');

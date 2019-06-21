@@ -17,28 +17,96 @@ use Illuminate\Support\Facades\Storage;
 
 class PropertiesController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $status = $request->status;
-        $type = $request->type;
-        $approved = $request->approved;
+        $data = Auth::user()->properties()->paginate(request("paginate")?request("paginate"):10);
+        PropertiesResource::collection($data);
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+    }
 
-        $query= Property::where("deleted_at", null)
-            ->when($status, function ($query) use ($status) {
-                return $query->where('property_status_id', $status);})
-            ->when($type, function ($query) use ($type) {
-                return $query->where('property_type_id', $type);})
-            ->when($approved, function ($query) use ($approved) {
-                return $query->where('approved', $approved);})
-            ->orderBy('id', 'DESC');
 
-        $data = $query->paginate($request->paginate?$request->paginate:10);
+    public function save(PropertyRequest $request)
+    {
+        $slug = preg_replace("/[^a-zA-Z]/","-",strtolower($request->title));
+        $check = Property::where('slug', $slug)->first();
+
+        $data = $request->id? Property::findOrFail($request->id) : new Property();
+        $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
+        $data->featured = $request->featured === !null;
+        $data->title = $request->title;
+        if ($check && $check->id !== $request->id){
+            $data->slug = $slug."-".rand(1000, 50000);
+        }else{
+            $data->slug = $slug;
+        }
+        $data->price = $request->price;
+        $data->description = $request->description;
+        $data->property_status_id = $request->status_id;
+        $data->property_type_id = $request->type_id;
+        $data->bedrooms = $request->bedrooms;
+        $data->bathrooms = $request->bathrooms;
+        $data->toilets = $request->toilets;
+        $data->furnished = $request->furnished === !null;
+        $data->serviced = $request->serviced === !null;
+        $data->parking = $request->parking;
+        $data->total_area = $request->total_area;
+        $data->covered_area = $request->covered_area;
+        $data->address = $request->address;
+//        $data->country_id = $request->country_id;
+        $data->state_id = $request->state_id;
+        $data->locality_id = $request->locality_id;
+        $data->save();
 
         return response()->json([
             "status"=> 1,
-            "data"=> PropertiesResource::collection($data),
-            "pagination"=> $data,
-            "count"=> $query->count(),
+            "message"=> "Saved Successfully!",
+            "data"=> [
+                "id"=> $data->id,
+            ]
+        ],200);
+
+
+    }
+
+    public function multiple(Request $request)
+    {
+        foreach ($request->request as $request) {
+            $slug = preg_replace("/[^a-zA-Z]/","-",strtolower($request['title']));
+            $check = Property::where('slug', $slug)->first();
+
+            $data = new Property();
+            $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
+            $data->featured = $request['featured'] === !null;
+            $data->title = $request['title'];
+            if ($check){
+                $data->slug = $slug."-".rand(1000, 50000);
+            }else{
+                $data->slug = $slug;
+            }
+            $data->price = $request['price'];
+            $data->description = $request['description'];
+            $data->property_status_id = $request['status_id'];
+            $data->property_type_id = $request['type_id'];
+            $data->bedrooms = $request['bedrooms'];
+            $data->bathrooms = $request['bathrooms'];
+            $data->toilets = $request['toilets'];
+            $data->furnished = $request['furnished'] === !null;
+            $data->serviced = $request['serviced'] === !null;
+            $data->parking = $request['parking'];
+            $data->total_area = $request['total_area'];
+            $data->covered_area = $request['covered_area'];
+            $data->address = $request['address'];
+            $data->state_id = $request['state_id'];
+            $data->locality_id = $request['locality_id'];
+            $data->save();
+
+        }
+        return response()->json([
+            "status"=> 1,
+            "message"=> "Properties added successfully!",
         ],200);
     }
 
@@ -52,31 +120,6 @@ class PropertiesController extends Controller
         ],200);
     }
 
-    public function save(PropertyRequest $request)
-    {
-        $data = $request->id? Property::find($request->id) : new Property();
-        $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
-        $data->title = $request->title;
-        $data->slug = preg_replace("/[^a-zA-Z]/","-",strtolower($request->title));
-        $data->price = $request->price;
-        $data->description = $request->description;
-        $data->property_status_id = $request->status_id;
-        $data->property_type_id = $request->type_id;
-        $data->featured = $request->featured === !null;
-        $data->bedrooms = $request->bedrooms;
-        $data->bathrooms = $request->bathrooms;
-        $data->toilets = $request->toilets;
-        $data->address = $request->address;
-//        $data->country_id = $request->country_id;
-        $data->state_id = $request->state_id;
-        $data->city_id = $request->city_id;
-        $data->save();
-
-        return response()->json([
-            "status"=> 1,
-            "message"=> "Saved Successfully!",
-        ],200);
-    }
 
     public static function image($request, $user)
     {

@@ -20,19 +20,20 @@ class UsersController extends Controller
         $name = $request->name;
         $email = $request->email;
         $state = $request->state;
-        $verified = $request->verified;
+//        $verified = $request->verified?$request->verified == "true"?1:0:false;
+//        $ver = $verified == 1?!null:null;
 
         $query = User::where("deleted_at", null)
             ->when($role, function ($query) use ($role) {
                 return $query->where('role_id', $role);})
             ->when($name, function ($query) use ($name) {
-                return $query->where('name', $name);})
+                return $query->where('name', 'LIKE', '%'.$name.'%');})
             ->when($email, function ($query) use ($email) {
                 return $query->where('email', $email);})
             ->when($state, function ($query) use ($state) {
                 return $query->where('state_id', $state);})
-            ->when($verified, function ($query) use ($verified) {
-                return $query->where('email_verified_at', $verified?!null:null);})
+//            ->when($verified, function ($query) use ($ver) {
+//                return $query->where('email_verified_at', $ver);})
             ->orderBy('id', 'DESC');
 
         $data = $query->paginate($request->paginate?$request->paginate:10);
