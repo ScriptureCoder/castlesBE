@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\PropertyRequest;
+use App\Http\Resources\Agent\PropertiesResource;
+use App\Http\Resources\Agent\PropertyResource;
 use App\Http\Resources\GalleryResource;
-use App\Http\Resources\PropertiesResource;
-use App\Http\Resources\PropertyResource;
 use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyGallery;
@@ -17,9 +17,45 @@ use Illuminate\Support\Facades\Storage;
 
 class PropertiesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Auth::user()->properties()->paginate(request("paginate")?request("paginate"):10);
+        $status = $request->status;
+        $type = $request->type;
+        $approved = $request->approved;
+        $featured = $request->featured;
+        $bedrooms = $request->bedrooms;
+        $bathrooms = $request->bathrooms;
+        $toilets = $request->toilets;
+        $furnished = $request->furnished;
+        $label = $request->label_id;
+        $state = $request->state_id;
+        $locality = $request->locality_id;
+
+        $query= Property::when($status, function ($query) use ($status) {
+                return $query->where('property_status_id', $status);})
+            ->when($type, function ($query) use ($type) {
+                return $query->where('property_type_id', $type);})
+            ->when($approved, function ($query) use ($approved) {
+                return $query->where('approved', $approved);})
+            ->when($featured, function ($query) use ($featured) {
+                return $query->where('featured', $featured);})
+            ->when($bedrooms, function ($query) use ($bedrooms) {
+                return $query->where('bedrooms', $bedrooms);})
+            ->when($bathrooms, function ($query) use ($bathrooms) {
+                return $query->where('bathrooms', $bathrooms);})
+            ->when($toilets, function ($query) use ($toilets) {
+                return $query->where('toilets', $toilets);})
+            ->when($furnished, function ($query) use ($furnished) {
+                return $query->where('furnished', $furnished);})
+            ->when($label, function ($query) use ($label) {
+                return $query->where('label_id', $label);})
+            ->when($state, function ($query) use ($state) {
+                return $query->where('state_id', $state);})
+            ->when($locality, function ($query) use ($locality) {
+                return $query->where('locality_id', $locality);})
+            ->orderBy('id', 'DESC');
+
+        $data = $query->paginate($request->paginate?$request->paginate:10);
         PropertiesResource::collection($data);
         return response()->json([
             "status"=> 1,

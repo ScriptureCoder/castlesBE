@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateArticlesTable extends Migration
+class CreatePropertyAdvicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateArticlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('property_advices', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer("user_id");
-            $table->integer("category_id");
-            $table->string("title");
+            $table->string("name");
             $table->string("slug");
-            $table->longText("text");
-            $table->string("image_id");
-            $table->timestamps();
         });
     }
 
@@ -32,6 +27,6 @@ class CreateArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('property_advices');
     }
 }

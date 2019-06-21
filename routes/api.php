@@ -10,9 +10,6 @@ Route::post('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
 Route::post('/change_password', 'Auth\API\PasswordController@changePassword')->middleware(['auth:api']);
 Route::post('/reset_password/{token}', 'Auth\API\PasswordController@resetPassword');
 
-Route::group(['prefix'=>'client'], function() {
-});
-
 /**Properties listing and search*/
 Route::group(['prefix'=>'properties'], function() {
     Route::get('/', 'PropertiesController@index');
@@ -25,6 +22,13 @@ Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:ap
 Route::post('/report_property', 'PropertiesController@report')->middleware(['auth:api']);
 Route::post('/request_property', 'PropertiesController@request')->middleware(['if_auth']);
 
+
+/**Property Advice*/
+Route::get('/property_advice', 'ArticlesController@categories');
+Route::get('/articles/{slug}', 'ArticlesController@adviceArticles');
+Route::post('/article/comment', 'ArticlesController@comment')->middleware(['if_auth']);
+Route::get('/articles', 'ArticlesController@articles');
+Route::get('/article/{slug}', 'ArticlesController@view');
 
 /**Static end-points*/
 Route::get('/countries', 'Statics\StaticController@countries');
@@ -81,6 +85,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
         Route::get('/project/{id}', 'Admin\AnalyticsController@projectViews');
         Route::get('/project', 'Admin\AnalyticsController@project');
     });
+
+    /*Property advise end-points*/
+    Route::post('/article/save', 'ArticlesController@save');
+    Route::post('/article/delete/{id}', 'ArticlesController@deleteArticle');
+    Route::post('/comment/delete/{id}', 'ArticlesController@deleteComment');
+
 });
 
 /**Agent end-points*/
