@@ -1,15 +1,16 @@
 <?php
-namespace App\Http\Controllers\Developer;
+
+namespace App\Http\Controllers;
+
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticlesResource;
-use App\Http\Resources\CommentResource;
 use App\Models\Article;
 use App\Models\ArticleComment;
 use App\Models\PropertyAdvice;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-class ArticleController extends Controller
+
+class ArticlesController extends Controller
 {
     public function categories()
     {

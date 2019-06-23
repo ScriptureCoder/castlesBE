@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Statics\Mailer;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\Admin\UsersResource;
 use App\Models\Subscriber;
 use App\User;
@@ -77,6 +78,24 @@ class UsersController extends Controller
             'status'=> 1,
             'message'=> 'User created Successfully!',
         ]);
+    }
+
+    public function edit(UserRequest $request, $id)
+    {
+        $user= User::findOrFail($id);
+        $user->username= $request->username;
+        $user->name= $request->name;
+        $user->email= $request->email;
+        $user->phone= $request->phone;
+        $user->address= $request->address;
+        $user->password= bcrypt($request->password);
+        $user->role_id= $request->role?$request->role > 4?1:$request->role:1;
+        $user->save();
+
+        return response()->json([
+            "status"=> 1,
+            "message"=> "Edited Successfully!",
+        ],200);
     }
 
     public function activate($id)

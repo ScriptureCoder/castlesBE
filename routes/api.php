@@ -71,6 +71,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     Route::group(['prefix'=>'users'], function() {
         Route::get('/', 'Admin\UsersController@index');
         Route::post('/create', 'Admin\UsersController@create');
+        Route::post('/edit/{id}', 'Admin\UsersController@edit');
         Route::get('/suspended', 'Admin\UsersController@suspended');
         Route::post('/{id}/activate', 'Admin\UsersController@activate');
         Route::post('/{id}/suspend', 'Admin\UsersController@suspend');
@@ -91,6 +92,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     Route::post('/article/delete/{id}', 'ArticlesController@deleteArticle');
     Route::post('/comment/delete/{id}', 'ArticlesController@deleteComment');
 
+    Route::group(['prefix'=>'newsletter'], function() {
+        Route::post('/send', 'Admin/NewsletterController@send');
+    });
+
 });
 
 /**Agent end-points*/
@@ -105,6 +110,13 @@ Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function()
         Route::post('/{id}/feature', 'Agent\PropertiesController@featureImage');
         Route::delete('/{id}/picture/delete/{image}', 'Agent\PropertiesController@removeFromGallery');
         Route::delete('/delete/{id}', 'Agent\PropertiesController@delete');
+    });
+
+    /*Analytics end-points*/
+    Route::group(['prefix'=>'analytics'], function() {
+        Route::get('/', 'Admin\AnalyticsController@index');
+        Route::get('/project/{id}', 'Admin\AnalyticsController@projectViews');
+        Route::get('/project', 'Admin\AnalyticsController@project');
     });
 });
 
