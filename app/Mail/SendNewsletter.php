@@ -32,11 +32,9 @@ class SendNewsletter extends Mailable
      */
     public function build()
     {
-        if ($this->type == 1){
-            return $this->from(env('EMAIL'), env('APP_NAME'))
-                ->view('emails.newsletter', ['name' => $this->user->name, 'html' => $this->post])
-                ->to($this->user->email)
-                ->subject( $this->subject );
-        }
+        return $this->from(env('EMAIL'), env('APP_NAME'))
+            ->view('emails.newsletter', ['name' => $this->user->name, 'html' => $this->post])
+            ->to($this->user->email)
+            ->subject( $this->subject );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Alert;
 use App\Models\Country;
 use App\Models\Image;
 use App\Models\Property;
@@ -65,6 +66,11 @@ class User extends Authenticatable
     public function savedProperties()
     {
         return $this->belongsToMany(Property::class, 'saved_properties');
+    }
+
+    public function alerts()
+    {
+        return $this->hasMany(Alert::class);
     }
 
 

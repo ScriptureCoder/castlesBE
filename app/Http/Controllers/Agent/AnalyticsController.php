@@ -16,7 +16,6 @@ class AnalyticsController extends Controller
         $data = collect();
         $data->push([
             'properties'=> Property::where('user_id', Auth::id())->count(),
-            'views'=> Auth::user()->properties->views()->count()
         ]);
 
         return response()->json([

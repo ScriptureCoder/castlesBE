@@ -22,6 +22,12 @@ Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:ap
 Route::post('/report_property', 'PropertiesController@report')->middleware(['auth:api']);
 Route::post('/request_property', 'PropertiesController@request')->middleware(['if_auth']);
 
+/**Search and Alert end-points*/
+Route::get('/search', 'SearchController@search');
+Route::post('/alert/save', 'AlertController@save')->middleware(['if_auth']);
+Route::get('/alerts', 'AlertController@index')->middleware(['auth:api']);
+Route::delete('/alert/delete/{id}', 'AlertController@delete')->middleware(['auth:api']);
+
 
 /**Property Advice*/
 Route::get('/property_advice', 'ArticlesController@categories');
@@ -114,9 +120,9 @@ Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function()
 
     /*Analytics end-points*/
     Route::group(['prefix'=>'analytics'], function() {
-        Route::get('/', 'Admin\AnalyticsController@index');
-        Route::get('/project/{id}', 'Admin\AnalyticsController@projectViews');
-        Route::get('/project', 'Admin\AnalyticsController@project');
+        Route::get('/', 'Agent\AnalyticsController@index');
+        Route::get('/project/{id}', 'Agent\AnalyticsController@projectViews');
+        Route::get('/project', 'Agent\AnalyticsController@project');
     });
 });
 
