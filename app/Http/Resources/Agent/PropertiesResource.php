@@ -35,7 +35,7 @@ class PropertiesResource extends Resource
             "serviced"=> !!$this->serviced,
             "parking"=> $this->parking,
             "total_area"=> $this->total_area,
-            "country"=> $this->state_id? $property->country->name:"",
+            "state"=> $this->state_id? $property->state->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
             "published"=> !!$this->published,

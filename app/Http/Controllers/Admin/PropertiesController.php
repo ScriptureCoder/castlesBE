@@ -7,9 +7,12 @@ use App\Http\Requests\PropertyRequest;
 use App\Http\Resources\Agent\PropertiesResource;
 use App\Http\Resources\Agent\PropertyResource;
 use App\Http\Resources\GalleryResource;
+use App\Http\Resources\PropertyReportResource;
+use App\Http\Resources\PropertyRequestResource;
 use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyGallery;
+use App\Models\PropertyReport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -240,15 +243,15 @@ class PropertiesController extends Controller
     }
 
 
-    public function delete($ids)
+    public function delete(Request $request)
     {
-        if (is_array($ids)) {
-            foreach ($ids as $id) {
-                $data = Property::findOrFail($id);
+        if (is_array($request->id)) {
+            foreach ($request->id as $id) {
+                $data = Property::find($id);
                 $data->delete();
             }
         }else{
-            $data = Property::findOrFail($ids);
+            $data = Property::findOrFail($request->id);
             $data->delete();
         }
 
@@ -258,15 +261,15 @@ class PropertiesController extends Controller
         ],200);
     }
 
-    public function destroy($ids)
+    public function destroy(Request $request)
     {
-        if (is_array($ids)){
-            foreach ($ids as $id) {
-                $data = Property::onlyTrashed()->findOrFail($id);
+        if (is_array($request->id)){
+            foreach ($request->id as $id) {
+                $data = Property::withTrashed()->findOrFail($id);
                 $data->forceDelete();
             }
         }else{
-            $data = Property::onlyTrashed()->findOrFail($ids);
+            $data = Property::withTrashed()->findOrFail($request->id);
             $data->forceDelete();
         }
 
@@ -276,45 +279,78 @@ class PropertiesController extends Controller
         ],200);
     }
 
-    public function approve($ids)
+    public function approve(Request $request)
     {
-        if (is_array($ids)){
-            foreach ($ids as $id){
+        if (is_array($request->id)){
+            foreach ($request->id as $id){
                 $data = Property::findOrFail($id);
-                $data->approved = true;
+                $data->published = true;
                 $data->save();
             }
         }else{
-            $data = Property::findOrFail($ids);
-            $data->approved = true;
+            $data = Property::findOrFail($request->id);
+            $data->published = true;
             $data->save();
         }
 
         return response()->json([
             "status"=> 1,
-            "message"=> "Approved Successfully!",
+            "message"=> "Successful!",
         ],200);
     }
 
 
-    public function disapprove($ids)
+    public function disapprove(Request $request)
     {
-        if (is_array($ids)){
-            foreach ($ids as $id){
+        if (is_array($request->id)){
+            foreach ($request->id as $id){
                 $data = Property::findOrFail($id);
-                $data->approved = false;
+                $data->published = false;
                 $data->save();
             }
         }else{
-            $data = Property::findOrFail($ids);
-            $data->approved = false;
+            $data = Property::findOrFail($request->id);
+            $data->published = false;
             $data->save();
         }
 
         return response()->json([
             "status"=> 1,
-            "message"=> "Approved Successfully!",
+            "message"=> "Successful!",
         ],200);
+    }
+
+    public function requests()
+    {
+        $data = \App\Models\PropertyRequest::orderBy('id', 'DESC')->paginate(request("paginate")?request("paginate"):10);
+        PropertyRequestResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            'data'=> $data
+        ]);
+    }
+
+    public function reports(Request $request)
+    {
+        $data = PropertyReport::orderBy('id', 'DESC')->paginate(request("paginate")?request("paginate"):10);
+        PropertyReportResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            'data'=> $data
+        ]);
+    }
+
+    public function propertyReports($id)
+    {
+        $data = PropertyReport::where('property_id', $id)->orderBy('id', 'DESC')->paginate(request("paginate")?request("paginate"):10);
+        PropertyReportResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            'data'=> $data
+        ]);
     }
 
     public function trash()

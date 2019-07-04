@@ -24,7 +24,8 @@ class ArticlesResource extends Resource
             ],
             'image'=>$this->image?url("/articles/".$this->image):"https://via.placeholder.com/600x200.png?text=".str_replace(" ", "+",$this->title),
             'title'=>$this->title,
-            'text'=>str_limit($this->content,100,"..."),
+            'slug'=>$this->slug,
+            'text'=>str_limit($this->text,100,"..."),
             'category'=> $article->category->name,
             'created_at'=> $this->created_at->toFormattedDateString()
         ];

@@ -90,7 +90,7 @@ class PropertiesController extends Controller
     {
         $data = Property::where("slug",$slug)->first();
 
-        /*Save views for analytics*/
+        /*persist views for analytics par day*/
         $view = PropertyView::whereDate('created_at', '=', date('Y-m-d'))->first();
         if (!$view)
             $view = new PropertyView();
@@ -144,14 +144,14 @@ class PropertiesController extends Controller
         ],200);
     }
 
-    public function report(Request $request, $id)
+    public function report(Request $request)
     {
         $request->validate([
             'report' => 'required|string',
         ]);
 
         $data = new PropertyReport();
-        $data->property_id = $id;
+        $data->property_id = $request->property_id;
         $data->user_id = Auth::id();
         $data->report = $request->report;
         $data->save();

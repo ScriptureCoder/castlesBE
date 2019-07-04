@@ -22,25 +22,25 @@ class ArticlesController extends Controller
         ],200);
     }
 
-    public function adviceArticles($slug)
+    public function adviceArticles(Request $request, $slug)
     {
-        $data = PropertyAdvice::where('slug', $slug)->first()->articles()->paginate;
+        $data = PropertyAdvice::where('slug', $slug)->first()->articles()->orderBy('id','DESC')->paginate($request->paginate?$request->paginate:10);
         ArticlesResource::collection($data);
 
         return response()->json([
             "status"=> 1,
-            "message"=> $data,
+            "data"=> $data,
         ],200);
     }
 
     public function articles(Request $request)
     {
-        $data = Article::paginate($request->paginate?$request->paginate:10);
+        $data = Article::orderBy('id','DESC')->paginate($request->paginate?$request->paginate:10);
         ArticlesResource::collection($data);
 
         return response()->json([
             "status"=> 1,
-            "message"=> $data,
+            "data"=> $data,
         ],200);
     }
 
@@ -62,6 +62,7 @@ class ArticlesController extends Controller
         $request->validate([
             'title' => 'required',
             'text' => 'required',
+            'category_id' => 'required|integer',
         ]);
 
         $article= $request->id? Article::findOrFail($request->id):new Article();
@@ -73,11 +74,12 @@ class ArticlesController extends Controller
             $article->slug = $slug;
         }
         $article->text= $request->text;
-        $article->status= 0;
+        $article->image_id= \App\Http\Controllers\Admin\PropertiesController::image($request->image,Auth::id());
+        $article->category_id= $request->category_id;
         $article->save();
 
         $response['status'] = 1;
-        $response['message']= "Posted Successfully!,";
+        $response['message']= "Saved Successfully!,";
         return response()->json($response, 200);
     }
 

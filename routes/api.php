@@ -19,6 +19,8 @@ Route::group(['prefix'=>'properties'], function() {
 
 Route::get('/saved_properties', 'PropertiesController@viewSaved')->middleware(['auth:api']);
 Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:api']);
+
+/** Report and request property*/
 Route::post('/report_property', 'PropertiesController@report')->middleware(['auth:api']);
 Route::post('/request_property', 'PropertiesController@request')->middleware(['if_auth']);
 
@@ -61,16 +63,23 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
         Route::get('/', 'Admin\PropertiesController@index');
         Route::post('/save', 'Admin\PropertiesController@save');
         Route::post('/save/multiple', 'Admin\PropertiesController@multiple');
+
+        Route::get('/reports', 'Admin\PropertiesController@reports');
+        Route::get('/requests', 'Admin\PropertiesController@requests');
+        Route::get('/{id}/reports', 'Admin\PropertiesController@propertyReports');
+
         Route::get('/trash', 'Admin\PropertiesController@trash');
         Route::get('/{id}', 'Admin\PropertiesController@view');
-        Route::get('/{id}/gallery', 'Admin\PropertiesController@gallery');
-        Route::post('/{id}/gallery/add', 'Admin\PropertiesController@addToGallery');
-        Route::post('/{id}/gallery/feature', 'Admin\PropertiesController@featureImage');
-        Route::delete('/{id}/gallery/remove', 'Admin\PropertiesController@removeFromGallery');
-        Route::post('/approve/{ids}', 'Admin\PropertiesController@approve');
-        Route::post('/disapprove/{ids}', 'Admin\PropertiesController@disapprove');
-        Route::delete('/property/delete/{ids}', 'Admin\PropertiesController@delete');
-        Route::delete('/property/destroy/{ids}', 'Admin\PropertiesController@destroy');
+
+        Route::get('/{id}/pictures', 'Agent\PropertiesController@gallery');
+        Route::post('/{id}/upload', 'Agent\PropertiesController@addToGallery');
+        Route::post('/{id}/feature', 'Agent\PropertiesController@featureImage');
+        Route::delete('/{id}/picture/delete/{image}', 'Agent\PropertiesController@removeFromGallery');
+
+        Route::post('/approve', 'Admin\PropertiesController@approve');
+        Route::post('/disapprove', 'Admin\PropertiesController@disapprove');
+        Route::post('/delete', 'Admin\PropertiesController@delete');
+        Route::post('/destroy', 'Admin\PropertiesController@destroy');
     });
 
     /*Users end-points*/
@@ -95,8 +104,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
 
     /*Property advise end-points*/
     Route::post('/article/save', 'ArticlesController@save');
-    Route::post('/article/delete/{id}', 'ArticlesController@deleteArticle');
-    Route::post('/comment/delete/{id}', 'ArticlesController@deleteComment');
+    Route::delete('/article/delete/{id}', 'ArticlesController@deleteArticle');
+    Route::delete('/comment/delete/{id}', 'ArticlesController@deleteComment');
 
     Route::group(['prefix'=>'newsletter'], function() {
         Route::post('/send', 'Admin/NewsletterController@send');

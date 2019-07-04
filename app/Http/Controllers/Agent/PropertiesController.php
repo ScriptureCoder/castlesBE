@@ -130,7 +130,7 @@ class PropertiesController extends Controller
             ],200);
         }else{
             $data = new PropertyGallery();
-            $data->image_id= $this->image($request->image,Auth::id());
+            $data->image_id= \App\Http\Controllers\Admin\PropertiesController::image($request->image,Auth::id());
             $data->property_id= $property_id;
             $data->save();
             return response()->json([

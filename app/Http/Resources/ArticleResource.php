@@ -24,18 +24,17 @@ class ArticleResource extends Resource
                 'name'=> $article->user->name,
                 'username'=> $article->user->username,
             ],
-            'image'=>$this->image?url("/articles/".$this->image):"https://via.placeholder.com/600x200.png?text=".str_replace(" ", "+",$this->title),
+            'image'=>$this->image_id?env("STORAGE") !== "local"? env("STORAGE_PATH")."".$article->image->path:url("/storage/".$article->image->path):"https://via.placeholder.com/600x200.png?text=".$this->slug,
             'title'=>$this->title,
-            'short'=>str_limit($this->content,100),
             'text'=> $this->text,
             'category'=> $article->category->name,
             'created_at'=> $this->created_at->toFormattedDateString(),
             'comments'=> CommentResource::collection($article->comments),
-            'previous'=> !$previous?:[
+            'previous'=> !$previous?false:[
                 "slug"=>$previous->slug,
                 "title"=> $previous->title
             ],
-            "next"=>!$next?:[
+            "next"=>!$next?false:[
                 "slug"=>$next->slug,
                 "title"=> $next->title
             ],

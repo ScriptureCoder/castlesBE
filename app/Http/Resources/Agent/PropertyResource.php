@@ -43,7 +43,7 @@ class PropertyResource extends Resource
             "country"=> $this->state_id? $property->country->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
-            "published"=> $this->published,
+            "published"=> !!$this->published,
             "views"=> $property->views()->sum("views"),
             "pictures"=> GalleryResource::collection($property->gallery),
             "features"=> FeaturesResource::collection($property->features),
