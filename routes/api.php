@@ -13,9 +13,11 @@ Route::post('/reset_password/{token}', 'Auth\API\PasswordController@resetPasswor
 /**Properties listing and search*/
 Route::group(['prefix'=>'properties'], function() {
     Route::get('/', 'PropertiesController@index');
+    Route::get('/{agent_id}/', 'PropertiesController@agent');
     Route::get('/filter', 'PropertiesController@filter');
-    Route::get('/{slug}', 'PropertiesController@view')->middleware(['if_auth']);
 });
+Route::get('/property/{slug}', 'PropertiesController@view')->middleware(['if_auth']);
+
 
 Route::get('/saved_properties', 'PropertiesController@viewSaved')->middleware(['auth:api']);
 Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:api']);
@@ -32,6 +34,7 @@ Route::delete('/alert/delete/{id}', 'AlertController@delete')->middleware(['auth
 
 
 /**Property Advice*/
+Route::get('/property_advise', 'ArticlesController@categories');
 Route::get('/property_advice', 'ArticlesController@categories');
 Route::get('/articles/{slug}', 'ArticlesController@adviceArticles');
 Route::post('/article/comment', 'ArticlesController@comment')->middleware(['if_auth']);

@@ -67,6 +67,17 @@ class PropertiesController extends Controller
         ],200);
     }
 
+    public function agent(Request $request, $id)
+    {
+        $data = Property::where("published", 1)->where('user_id', $id)->paginate($request->paginate?$request->paginate:10);
+        PropertiesResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+    }
+
     public function filter(Request $request)
     {
         $data = collect();

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Agent;
 
 use App\Models\Property;
+use App\User;
 use Illuminate\Http\Resources\Json\Resource;
 
 class PropertiesResource extends Resource
@@ -16,10 +17,15 @@ class PropertiesResource extends Resource
     public function toArray($request)
     {
         $property = Property::find($this->id);
+        $agent = User::find($this->user_id);
 
         return [
             "id"=> $this->id,
             "title" => $this->title,
+            "agent"=> [
+                "id" => $agent->id,
+                "name"=> $agent->name,
+            ],
             "slug"=> $this->slug,
             "price"=> $this->price,
             "description"=> str_limit($this->description,"150","..."),
