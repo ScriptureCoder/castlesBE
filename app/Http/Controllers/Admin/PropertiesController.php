@@ -160,6 +160,10 @@ class PropertiesController extends Controller
     }
 
 
+    /**
+     * $request param is the file to be uploaded
+     * $user param is the user_id of the uploader
+    */
     public static function image($request, $user)
     {
         $image = Storage::disk(env("STORAGE"))->put('/properties', $request);
@@ -207,7 +211,7 @@ class PropertiesController extends Controller
         }
         return response()->json([
             "status"=> 1,
-            "message"=> "Remove successfully!"
+            "message"=> "Removed successfully!"
         ]);
     }
 

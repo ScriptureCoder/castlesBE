@@ -140,8 +140,8 @@ Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function()
 
 
 /**Agent end-points*/
-Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','super_admin']], function() {
-
+Route::group(['middleware'=>['auth:api','super_admin']], function() {
+    Route::get('/project', 'Agent\AnalyticsController@project');
 });
 
 
