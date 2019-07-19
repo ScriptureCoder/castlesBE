@@ -25,9 +25,13 @@ Route::group(['prefix'=>'properties'], function() {
 });
 Route::get('/property/{slug}', 'PropertiesController@view')->middleware(['if_auth']);
 
-
 Route::get('/saved_properties', 'PropertiesController@viewSaved')->middleware(['auth:api']);
 Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:api']);
+
+
+/**Magazine end-points*/
+Route::get('/magazines', 'Admin/MagazinesController@index');
+Route::post('/magazine/download/{id}', 'Admin/MagazinesController@download');
 
 /** Report and request property*/
 Route::post('/report_property', 'PropertiesController@report')->middleware(['auth:api']);
@@ -123,6 +127,13 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
 
     /*send newsletter*/
     Route::post('/send_newsletter', 'Admin/NewsletterController@send');
+
+    /*Magazine end-points*/
+    Route::get('/magazines', 'Admin/MagazinesController@index');
+    Route::post('/magazine/save', 'Admin/MagazinesController@save');
+    Route::post('/magazine/download/{id}', 'Admin/MagazinesController@download');
+    Route::delete('/magazine/download/{id}', 'Admin/MagazinesController@delete');
+
 
 
 });

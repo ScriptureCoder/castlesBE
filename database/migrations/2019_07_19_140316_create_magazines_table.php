@@ -15,9 +15,10 @@ class CreateMagazinesTable extends Migration
     {
         Schema::create('magazines', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("title")->nullable();
-            $table->string("description")->nullable();
-            $table->string("file")->nullable();
+            $table->string("title");
+            $table->mediumText("description")->nullable();
+            $table->string("file");
+            $table->string("image")->nullable();
             $table->timestamps();
         });
     }

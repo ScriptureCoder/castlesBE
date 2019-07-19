@@ -24,9 +24,15 @@ class MagazineController extends Controller
 
     public function save(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'string|max:1000',
+            'file' => 'required',
+        ]);
         $data = new Magazine();
         $data->title = $request->title;
         $data->description = $request->description;
+        $data->image = $request->image?Storage::disk(env("STORAGE"))->put('/magazines/images/', $request->image):"";
         $data->file = Storage::disk(env("STORAGE"))->put('/magazines/', $request->file);
 
         return response()->json([
