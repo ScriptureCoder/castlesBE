@@ -15,6 +15,7 @@ class ImageController extends Controller
         $data = Image::where('user_id', Auth::id())
             ->paginate(request('paginate')?request('paginate'):10);
         ImageResource::collection($data);
+
         return response()->json([
             'status'=> 1,
             'data'=> $data
@@ -22,12 +23,12 @@ class ImageController extends Controller
     }
 
 
-    public static function image(Request $request)
+    public function upload(Request $request)
     {
         $urls = collect();
 
         foreach ($request->images as $image) {
-            $image = Storage::disk(env("STORAGE"))->put('/uploads', $request);
+            $image = Storage::disk(env("STORAGE"))->put('/uploads', $image);
             $data = new Image();
             $data->category = "uploads";
             $data->path= $image;

@@ -73,7 +73,7 @@ class PropertiesController extends Controller
         $check = Property::where('slug', $slug)->first();
 
         $data = $request->id? Property::findOrFail($request->id) : new Property();
-        $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
+        $data->user_id = $request->agent_id?$request->agent_id:Auth::id();
         $data->featured = $request->featured === !null;
         $data->title = $request->title;
         if ($check && $check->id !== $request->id){
@@ -326,7 +326,8 @@ class PropertiesController extends Controller
 
     public function requests()
     {
-        $data = \App\Models\PropertyRequest::orderBy('id', 'DESC')->paginate(request("paginate")?request("paginate"):10);
+        $data = \App\Models\PropertyRequest::orderBy('id', 'DESC')
+            ->paginate(request("paginate")?request("paginate"):10);
         PropertyRequestResource::collection($data);
 
         return response()->json([
@@ -337,7 +338,8 @@ class PropertiesController extends Controller
 
     public function reports(Request $request)
     {
-        $data = PropertyReport::orderBy('id', 'DESC')->paginate(request("paginate")?request("paginate"):10);
+        $data = PropertyReport::orderBy('id', 'DESC')
+            ->paginate(request("paginate")?request("paginate"):10);
         PropertyReportResource::collection($data);
 
         return response()->json([
@@ -348,7 +350,8 @@ class PropertiesController extends Controller
 
     public function propertyReports($id)
     {
-        $data = PropertyReport::where('property_id', $id)->orderBy('id', 'DESC')->paginate(request("paginate")?request("paginate"):10);
+        $data = PropertyReport::where('property_id', $id)
+            ->orderBy('id', 'DESC')->paginate(request("paginate")?request("paginate"):10);
         PropertyReportResource::collection($data);
 
         return response()->json([

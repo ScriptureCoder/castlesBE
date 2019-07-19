@@ -2,9 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Image;
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\Storage;
 
-class ImageResource extends Resource
+class PicturesMigrate extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +17,7 @@ class ImageResource extends Resource
     public function toArray($request)
     {
         return [
-            "src"=> env("STORAGE") !== "local"? env("STORAGE_PATH")."".$this->path:url("/storage/".$this->path)
+            "src"=> base64_encode(Storage::get(Image::find($this->id)->path))
         ];
     }
 }

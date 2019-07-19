@@ -35,7 +35,7 @@ class NewsletterController extends Controller
         foreach ($users as $user) {
             $email = [
                 "subject"=> $subject,
-                'email' => $users->email,
+                'email' => $user->email,
                 "html"=> $post
             ];
 

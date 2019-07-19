@@ -9,7 +9,13 @@ Route::post('/activate/{token}', 'Auth\API\RegisterController@activate')->middle
 Route::post('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
 Route::post('/change_password', 'Auth\API\PasswordController@changePassword')->middleware(['auth:api']);
 Route::post('/reset_password/{token}', 'Auth\API\PasswordController@resetPassword');
+
+/*send email*/
 Route::post('/send_email', 'EmailController@send')->middleware(['auth:api']);
+
+/*Images end-point*/
+Route::post('/upload_images', 'ImageController@upload')->middleware(['auth:api']);
+Route::get('/my_images', 'ImageController@myImages')->middleware(['auth:api']);
 
 /**Properties listing and search*/
 Route::group(['prefix'=>'properties'], function() {
@@ -146,7 +152,8 @@ Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function()
 
 /**Agent end-points*/
 Route::group(['middleware'=>['auth:api','super_admin']], function() {
-    Route::get('/project', 'Agent\AnalyticsController@project');
+    Route::get('/migration', 'Admin\OfflineController@getAll');
+    Route::post('/migrate', 'Admin\OfflineController@migrate');
 });
 
 
