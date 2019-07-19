@@ -9,6 +9,7 @@ Route::post('/activate/{token}', 'Auth\API\RegisterController@activate')->middle
 Route::post('/forgot_password', 'Auth\API\PasswordController@forgotPassword');
 Route::post('/change_password', 'Auth\API\PasswordController@changePassword')->middleware(['auth:api']);
 Route::post('/reset_password/{token}', 'Auth\API\PasswordController@resetPassword');
+Route::post('/send_email', 'EmailController@send')->middleware(['auth:api']);
 
 /**Properties listing and search*/
 Route::group(['prefix'=>'properties'], function() {
@@ -113,6 +114,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     Route::group(['prefix'=>'newsletter'], function() {
         Route::post('/send', 'Admin/NewsletterController@send');
     });
+
+    /*send newsletter*/
+    Route::post('/send_newsletter', 'Admin/NewsletterController@send');
+
 
 });
 

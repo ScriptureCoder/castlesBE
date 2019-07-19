@@ -17,10 +17,7 @@ class CreateEmailsTable extends Migration
             $table->increments('id');
             $table->string("subject")->nullable();
             $table->integer("to")->nullable();
-            $table->integer("user_id")->nullable();
-            $table->string("sender_email")->nullable();
-            $table->string("sender_name")->nullable();
-            $table->string("email")->nullable();
+            $table->integer("from")->nullable();
             $table->longText("message")->nullable();
             $table->timestamps();
         });
