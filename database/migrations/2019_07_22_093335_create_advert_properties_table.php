@@ -15,9 +15,8 @@ class CreateAdvertPropertiesTable extends Migration
     {
         Schema::create('advert_properties', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("title")->nullable();
-            $table->string("description")->nullable();
-            $table->string("image")->nullable();
+            $table->integer('property_id');
+            $table->integer('advert_id');
             $table->timestamps();
         });
     }

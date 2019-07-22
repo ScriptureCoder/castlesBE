@@ -12,7 +12,7 @@ class MagazineController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Magazine::paginate($request->paginate?$request->paginate:10);
+        $data = Magazine::orderBy("id", "DESC")->paginate($request->paginate?$request->paginate:10);
         MagazineResource::collection($data);
 
         return response()->json([
@@ -26,14 +26,15 @@ class MagazineController extends Controller
     {
         $request->validate([
             'title' => 'required|string',
-            'description' => 'string|max:1000',
+            'description' => 'string',
             'file' => 'required',
         ]);
-        $data = new Magazine();
+        $data = $request->id?Magazine::findOrFail($request->id):new Magazine();
         $data->title = $request->title;
         $data->description = $request->description;
-        $data->image = $request->image?Storage::disk(env("STORAGE"))->put('/magazines/images/', $request->image):"";
-        $data->file = Storage::disk(env("STORAGE"))->put('/magazines/', $request->file);
+        $data->image = $request->image?Storage::disk(env("STORAGE"))->put('/magazines/images', $request->image):"";
+        $data->file = Storage::disk(env("STORAGE"))->put('/magazines', $request->file);
+        $data->save();
 
         return response()->json([
             "status"=> 1,
@@ -49,10 +50,18 @@ class MagazineController extends Controller
     }
 
 
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $data = Magazine::findOrFail($id);
-        $data->delete();
+        if (is_array($request->id)){
+            foreach($request->id as $id){
+                $data = Magazine::findOrFail($id);
+                $data->delete();
+            }
+        }else{
+            $data = Magazine::findOrFail($request->id);
+            $data->delete();
+        }
+
 
         return response()->json([
             "status"=> 1,

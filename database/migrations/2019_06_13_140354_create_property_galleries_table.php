@@ -15,11 +15,8 @@ class CreatePropertyGalleriesTable extends Migration
     {
         Schema::create('property_galleries', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer("property_id");
-            $table->integer('image_id')->unsigned()->index();
-            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
-            $table->integer('property_id')->unsigned()->index();
-            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
+            $table->integer('image_id')->nullable();
+            $table->integer('property_id')->nullable();
         });
     }
 

@@ -30,12 +30,12 @@ Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:ap
 
 
 /**Magazine end-points*/
-Route::get('/magazines', 'Admin/MagazinesController@index');
-Route::post('/magazine/download/{id}', 'Admin/MagazinesController@download');
+Route::get('/magazines', 'Admin\MagazineController@index');
+Route::get('/magazine/download/{id}', 'Admin\MagazineController@download');
 
 /**advert end-point*/
-Route::get('/adverts', 'AdvertsController@list');
-Route::get('/advert/{id}', 'AdvertsController@properties');
+Route::get('/adverts', 'AdvertController@list');
+Route::get('/advert/{id}', 'AdvertController@properties');
 
 /** Report and request property*/
 Route::post('/report_property', 'PropertiesController@report')->middleware(['auth:api']);
@@ -126,24 +126,26 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     Route::delete('/comment/delete/{id}', 'ArticlesController@deleteComment');
 
     Route::group(['prefix'=>'newsletter'], function() {
-        Route::post('/send', 'Admin/NewsletterController@send');
+        Route::post('/send', 'Admin\NewsletterController@send');
     });
 
     /*send newsletter*/
-    Route::post('/send_newsletter', 'Admin/NewsletterController@send');
+    Route::post('/send_newsletter', 'Admin\NewsletterController@send');
 
     /*Magazine end-points*/
-    Route::get('/magazines', 'Admin/MagazinesController@index');
-    Route::post('/magazine/save', 'Admin/MagazinesController@save');
-    Route::post('/magazine/download/{id}', 'Admin/MagazinesController@download');
-    Route::delete('/magazine/download/{id}', 'Admin/MagazinesController@delete');
+    Route::get('/magazines', 'Admin\MagazineController@index');
+    Route::post('/magazine/save', 'Admin\MagazineController@save');
+    Route::post('/magazine/download/{id}', 'Admin\MagazineController@download');
+    Route::delete('/magazines/delete', 'Admin\MagazineController@delete');
 
 
     /*advert end-point*/
-    Route::get('/adverts', 'Admin/AdvertsController@list');
-    Route::get('/advert/{id}', 'Admin/AdvertsController@properties');
-    Route::post('/adverts/refresh', 'Admin/AdvertsController@refresh');
-    Route::post('/adverts/delete', 'Admin/AdvertsController@delete');
+    Route::get('/adverts', 'Admin\AdvertController@list');
+    Route::post('/advert/save', 'Admin\AdvertController@save');
+    Route::get('/advert/{id}', 'Admin\AdvertController@properties');
+    Route::post('/advert/add_properties/{id}', 'Admin\AdvertController@addProperties');
+    Route::post('/adverts/refresh', 'Admin\AdvertController@refresh');
+    Route::delete('/adverts/delete', 'Admin\AdvertController@delete');
 
 
 });

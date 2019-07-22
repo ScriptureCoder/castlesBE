@@ -15,8 +15,14 @@ class CreateAdvertsTable extends Migration
     {
         Schema::create('adverts', function (Blueprint $table) {
             $table->increments('id');
+            $table->string("title")->nullable();
+            $table->longText("description")->nullable();
+            $table->longText("days")->nullable();
+            $table->string("image")->nullable();
+            $table->date("expired_at")->nullable();
             $table->timestamps();
         });
+        \Illuminate\Support\Facades\DB::statement('ALTER TABLE adverts AUTO_INCREMENT = 2000;');
     }
 
     /**

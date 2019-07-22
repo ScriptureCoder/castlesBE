@@ -16,11 +16,12 @@ class CreateMagazinesTable extends Migration
         Schema::create('magazines', function (Blueprint $table) {
             $table->increments('id');
             $table->string("title");
-            $table->mediumText("description")->nullable();
+            $table->longText("description")->nullable();
             $table->string("file");
             $table->string("image")->nullable();
             $table->timestamps();
         });
+        \Illuminate\Support\Facades\DB::statement('ALTER TABLE magazines AUTO_INCREMENT = 1000;');
     }
 
     /**

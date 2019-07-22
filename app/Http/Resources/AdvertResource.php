@@ -20,6 +20,9 @@ class AdvertResource extends Resource
             'id'=> $this->id,
             'title'=> $this->title,
             'description'=> $this->description,
+            'days'=> $this->days,
+            'image'=> env("STORAGE") !== "local"? env("STORAGE_PATH")."".$this->image:url("/storage/".$this->image),
+            'expired_at'=> $this->expired_at->diffForHumans(),
             'total_properties'=> $advert->properties->count()
         ];
     }
