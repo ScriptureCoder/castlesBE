@@ -33,6 +33,10 @@ Route::post('/save_property', 'PropertiesController@save')->middleware(['auth:ap
 Route::get('/magazines', 'Admin/MagazinesController@index');
 Route::post('/magazine/download/{id}', 'Admin/MagazinesController@download');
 
+/**advert end-point*/
+Route::get('/adverts', 'AdvertsController@list');
+Route::get('/advert/{id}', 'AdvertsController@properties');
+
 /** Report and request property*/
 Route::post('/report_property', 'PropertiesController@report')->middleware(['auth:api']);
 Route::post('/request_property', 'PropertiesController@request')->middleware(['if_auth']);
@@ -134,6 +138,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     Route::post('/magazine/download/{id}', 'Admin/MagazinesController@download');
     Route::delete('/magazine/download/{id}', 'Admin/MagazinesController@delete');
 
+
+    /*advert end-point*/
+    Route::get('/adverts', 'Admin/AdvertsController@list');
+    Route::get('/advert/{id}', 'Admin/AdvertsController@properties');
+    Route::post('/adverts/refresh', 'Admin/AdvertsController@refresh');
+    Route::post('/adverts/delete', 'Admin/AdvertsController@delete');
 
 
 });
