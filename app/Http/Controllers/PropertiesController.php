@@ -157,6 +157,7 @@ class PropertiesController extends Controller
 
     public function report(Request $request)
     {
+        Property::findOrFail($request->property_id);
         $request->validate([
             'report' => 'required|string',
         ]);

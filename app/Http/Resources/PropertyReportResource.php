@@ -17,8 +17,13 @@ class PropertyReportResource extends Resource
     {
         $report = PropertyReport::find($this->id);
 
+
         return [
             'id'=> $this->id,
+            'user'=> [
+                'id'=>$this->user_id,
+                'name'=> $report->user->name,
+            ],
             'property'=> [
                 'id'=> $report->property->id,
                 'title'=> $report->property->title
