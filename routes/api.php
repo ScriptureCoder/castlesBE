@@ -135,6 +135,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     });
 
     /*send newsletter*/
+    Route::get('/subscribers', 'Admin\NewsletterController@subscribers');
     Route::post('/send_newsletter', 'Admin\NewsletterController@send');
 
     /*Magazine end-points*/

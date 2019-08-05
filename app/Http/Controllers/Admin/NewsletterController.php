@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Statics\Mailer;
+use App\Http\Resources\SubscriberResource;
 use App\Mail\SendNewsletter;
 use App\Models\Subscriber;
 use App\User;
@@ -12,6 +13,19 @@ use Illuminate\Support\Facades\Mail;
 
 class NewsletterController extends Controller
 {
+
+    public function subscribers(Request $request)
+    {
+        $data = Subscriber::paginate($request->paginate?$request->paginate:10);
+        SubscriberResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+
+    }
+
     public function send(Request $request)
     {
         switch ($request->target){
