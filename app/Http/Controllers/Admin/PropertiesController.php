@@ -9,6 +9,7 @@ use App\Http\Resources\Agent\PropertyResource;
 use App\Http\Resources\GalleryResource;
 use App\Http\Resources\PropertyReportResource;
 use App\Http\Resources\PropertyRequestResource;
+use App\Models\Alert;
 use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyGallery;

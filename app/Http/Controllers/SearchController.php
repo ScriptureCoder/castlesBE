@@ -62,8 +62,8 @@ class SearchController extends Controller
         $data = new Search();
         $data->bedrooms = $request->bedrooms;
         $data->bathrooms = $request->bathrooms;
-        $data->property_type_id = $request->type_id;
-        $data->property_status_id = $request->status_id;
+        $data->type_id = $request->type_id;
+        $data->status_id = $request->status_id;
         $data->min_price = $request->min_price;
         $data->max_price = $request->max_price;
         $data->locality_id = $request->locality_id;

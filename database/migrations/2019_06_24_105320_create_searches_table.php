@@ -17,12 +17,12 @@ class CreateSearchesTable extends Migration
             $table->increments('id');
             $table->integer("bedrooms")->nullable();
             $table->integer("bathrooms")->nullable();
-            $table->integer("property_type_id")->nullable();
+            $table->integer("type_id")->nullable();
             $table->integer("locality_id")->nullable();
             $table->integer("state_id")->nullable();
             $table->integer("min_price")->nullable();
             $table->integer("max_price")->nullable();
-            $table->integer("property_status_id")->nullable();
+            $table->integer("status_id")->nullable();
             $table->timestamps();
         });
     }

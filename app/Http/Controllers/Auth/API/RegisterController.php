@@ -94,7 +94,6 @@ class RegisterController extends Controller
 
         if (!Subscriber::where('email',$request->email)->first()) {
             $sub= new Subscriber();
-            $sub->name= $request->name;
             $sub->email= $request->email;
             $sub->save();
             $response['status'] = 1;

@@ -30,6 +30,7 @@ class UserRequest extends FormRequest
             'country_id' => 'integer',
             'state_id' => 'integer',
             'address' => 'string|max:255',
+            'bio' => 'string|max:1000',
         ];
     }
 }

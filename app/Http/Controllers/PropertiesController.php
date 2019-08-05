@@ -179,7 +179,7 @@ class PropertiesController extends Controller
         $request->validate([
             'comment' => 'string',
             'type' => 'string',
-            'category_id' => 'required|string',
+            'category_id' => 'required|integer',
             'budget' => 'integer',
             'bedrooms' => 'integer',
             'state_id' => 'required|integer',

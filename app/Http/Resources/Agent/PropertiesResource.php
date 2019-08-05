@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Agent;
 
+use App\Http\Resources\GalleryResource;
 use App\Models\Property;
 use App\User;
 use Illuminate\Http\Resources\Json\Resource;
@@ -34,6 +35,7 @@ class PropertiesResource extends Resource
             "featured"=> !!$this->featured,
             "label"=> $this->label_id? $property->label->name:"",
             "image"=> $this->image_id?env("STORAGE") !== "local"? env("STORAGE_PATH")."".$property->image->path:url("/storage/".$property->image->path):"",
+            "pictures"=> GalleryResource::collection($property->gallery),
             "bedrooms"=> $this->bedrooms,
             "bathrooms"=> $this->bathrooms,
             "toilets"=> $this->toilets,

@@ -1,7 +1,7 @@
 <?php
 
 /**Authentication end-points*/
-Route::post('/register', 'Auth\API\RegisterController@register');
+Route::post('/registration', 'Auth\API\RegisterController@register');
 Route::post('/login', 'Auth\API\RegisterController@login');
 Route::post('/oauth', 'Auth\API\RegisterController@oauth');
 Route::post('/resend', 'Auth\API\RegisterController@resend')->middleware(['auth:api']);
@@ -12,6 +12,7 @@ Route::post('/reset_password/{token}', 'Auth\API\PasswordController@resetPasswor
 
 /*send email*/
 Route::post('/send_email', 'EmailController@send')->middleware(['auth:api']);
+Route::post('/subscribe', 'Auth\API\RegisterController@subscribe');
 
 /*Images end-point*/
 Route::post('/upload_images', 'ImageController@upload')->middleware(['auth:api']);
@@ -20,9 +21,13 @@ Route::get('/my_images', 'ImageController@myImages')->middleware(['auth:api']);
 /**Properties listing and search*/
 Route::group(['prefix'=>'properties'], function() {
     Route::get('/', 'PropertiesController@index');
-    Route::get('/{agent_id}/', 'PropertiesController@agent');
     Route::get('/filter', 'PropertiesController@filter');
+    Route::get('/{agent_id}', 'PropertiesController@agent');
 });
+
+//list agent
+Route::get('/agents', 'UsersController@agents');
+
 Route::get('/property/{slug}', 'PropertiesController@view')->middleware(['if_auth']);
 
 Route::get('/saved_properties', 'PropertiesController@viewSaved')->middleware(['auth:api']);

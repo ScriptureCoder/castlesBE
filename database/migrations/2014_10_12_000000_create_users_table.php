@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('email',100)->unique();
             $table->string("provider")->default("direct");
             $table->string("address")->nullable();
+            $table->mediumText("bio")->nullable();
             $table->integer("country_id")->default(160);
             $table->integer("state_id")->nullable();
             $table->string("phone")->nullable();
