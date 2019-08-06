@@ -27,7 +27,7 @@ class PropertyRequest extends FormRequest
             'title' => 'required|string|max:225',
             'price' => 'required|integer',
             'description' => 'required|string',
-            'status_id' => 'integer',
+            'status_id' => 'required|integer',
             'type_id' => 'integer',
             'bedrooms' => 'integer',
             'bathrooms' => 'integer',

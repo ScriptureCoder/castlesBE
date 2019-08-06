@@ -84,6 +84,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
 
     Route::group(['prefix'=>'properties'], function() {
         Route::get('/', 'Admin\PropertiesController@index');
+        Route::get('/edit/{id}', 'Admin\PropertiesController@edit');
         Route::post('/save', 'Admin\PropertiesController@save');
         Route::post('/save/multiple', 'Admin\PropertiesController@multiple');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\PropertyRequest;
+use App\Http\Resources\Admin\EditPropertyResource;
 use App\Http\Resources\Agent\PropertiesResource;
 use App\Http\Resources\Agent\PropertyResource;
 use App\Http\Resources\GalleryResource;
@@ -64,6 +65,15 @@ class PropertiesController extends Controller
         return response()->json([
             "status"=> 1,
             "data"=> $data,
+        ],200);
+    }
+
+    public function edit($id)
+    {
+        $data = Property::findOrFail($id);
+        return response()->json([
+            "status"=> 1,
+            "data"=> new EditPropertyResource($data),
         ],200);
     }
 
