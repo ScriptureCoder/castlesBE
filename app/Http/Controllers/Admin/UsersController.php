@@ -136,7 +136,7 @@ class UsersController extends Controller
 
     public function suspended(Request $request)
     {
-        $data = User::onlyTrashed()->paginate($request->paginate?$request->paginate:10);;
+        $data = User::onlyTrashed()->paginate($request->paginate?$request->paginate:10);
 
         UsersResource::collection($data);
 

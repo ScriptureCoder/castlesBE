@@ -182,7 +182,7 @@ Route::group(['prefix'=>'agent', 'middleware'=>['auth:api','agent']], function()
 
 /**Agent end-points*/
 Route::group(['middleware'=>['auth:api','super_admin']], function() {
-    Route::get('/migration/list', 'Admin\OfflineController@getList');
+    Route::post('/migration/list', 'Admin\OfflineController@getList');
     Route::get('/migration', 'Admin\OfflineController@getAll');
     Route::post('/migrate', 'Admin\OfflineController@migrate');
     Route::post('/migrate/single', 'Admin\OfflineController@singleMigrate');

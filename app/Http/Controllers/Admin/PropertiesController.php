@@ -262,7 +262,7 @@ class PropertiesController extends Controller
     {
         if (is_array($request->id)) {
             foreach ($request->id as $id) {
-                $data = Property::find($id);
+                $data = Property::findOrFail($id);
                 $data->delete();
             }
         }else{

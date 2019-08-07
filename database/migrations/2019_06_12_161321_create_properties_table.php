@@ -21,7 +21,7 @@ class CreatePropertiesTable extends Migration
             $table->string("slug");
             $table->longText("description");
             $table->integer("property_status_id")->default(1);
-            $table->integer("property_type_id")->default(1);
+            $table->integer("property_type_id")->nullable()->default(1);
             $table->integer("label_id")->default(1);
             $table->boolean("featured")->default(false);
             $table->integer("image_id")->nullable();

@@ -18,7 +18,7 @@ class PropertiesResource extends Resource
     public function toArray($request)
     {
         $property = Property::find($this->id);
-        $agent = User::find($this->user_id);
+        $agent = User::withTrashed()->find($this->user_id);
 
         return [
             "id"=> $this->id,
