@@ -24,7 +24,7 @@ class UsersController extends Controller
 //        $verified = $request->verified?$request->verified == "true"?1:0:false;
 //        $ver = $verified == 1?!null:null;
 
-        $query = User::where("deleted_at", null)
+        $query = User::withTrashed()
             ->when($role, function ($query) use ($role) {
                 return $query->where('role_id', $role);})
             ->when($name, function ($query) use ($name) {

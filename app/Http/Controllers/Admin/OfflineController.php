@@ -22,6 +22,71 @@ class OfflineController extends Controller
         ],200);
     }
 
+    public function getList(Request $request)
+    {
+        $request->validate([
+            "ids"=> "required"
+        ]);
+
+        $data = collect();
+
+        foreach ($request->ids as $id){
+            $property = Property::findOrFail($id);
+            $data->push($property);
+        }
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> MigrateResource::collection($data),
+        ],200);
+    }
+
+    public function singleMigrate(Request $request)
+    {
+        $slug = preg_replace("/[^a-zA-Z]/","-",strtolower($request->title));
+        $check = Property::where('slug', $slug)->first();
+
+        $data = new Property();
+        $data->user_id = $request->agent_id?$request->agent_id:Auth::id();
+        $data->featured = $request->featured === !null;
+        $data->title = $request->title;
+        if ($check){
+            $data->slug = $slug."-".rand(1000, 50000);
+        }else{
+            $data->slug = $slug;
+        }
+        $data->price = $request->price;
+        $data->description = $request->description;
+        $data->property_status_id = $request->status_id;
+        $data->property_type_id = $request->type_id;
+        $data->bedrooms = $request->bedrooms;
+        $data->bathrooms = $request->bathrooms;
+        $data->toilets = $request->toilets;
+        $data->furnished = $request->furnished === !null;
+        $data->serviced = $request->serviced === !null;
+        $data->parking = $request->parking;
+        $data->total_area = $request->total_area;
+        $data->covered_area = $request->covered_area;
+        $data->address = $request->address;
+        $data->state_id = $request->state_id;
+        $data->locality_id = $request->locality_id;
+        $data->save();
+
+        foreach ($request->pictures as $image) {
+            $photo = new PropertyGallery();
+            $photo->image_id= $this->image($image['src'],$data->user_id);
+            $photo->property_id= $data->id;
+            $photo->save();
+            if (!$data->image)
+                $data->image_id= $photo->image_id;
+            $data->save();
+        }
+        return response()->json([
+            "status"=> 1,
+            "message"=> "Done!",
+        ],200);
+    }
+
 
     public function migrate(Request $request)
     {

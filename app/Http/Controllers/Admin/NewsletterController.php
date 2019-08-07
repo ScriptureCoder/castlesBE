@@ -28,6 +28,12 @@ class NewsletterController extends Controller
 
     public function send(Request $request)
     {
+        $request->validate([
+            "subject"=> "required|string",
+            "html"=> "required|string",
+            "target"=> "required|string"
+        ]);
+
         switch ($request->target){
             case "subscribers":
                 $users = Subscriber::all();
