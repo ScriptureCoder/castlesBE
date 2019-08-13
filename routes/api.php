@@ -70,6 +70,9 @@ Route::get('/features', 'Statics\StaticController@features');
 Route::get('/property_statuses', 'Statics\StaticController@statuses');
 Route::get('/property_types', 'Statics\StaticController@types');
 
+/**save statics*/
+Route::post('/add_locality', 'Statics\StaticController@saveLocality');
+
 
 Route::group(['prefix'=>'user', 'middleware'=>['auth:api']], function() {
     Route::get('/', 'UsersController@index');

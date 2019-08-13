@@ -41,6 +41,26 @@ class StaticController extends Controller
         ]);
     }
 
+    public function saveLocality(Request $request)
+    {
+        $request->validate([
+            "state_id"=> "required|integer",
+            "name"=> "required|string"
+        ]);
+
+        $data = new Locality();
+        $data->state_id = $request->state_id;
+        $data->name = $request->name;
+        $data->save();
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> [
+                "id"=> $data->id
+            ],
+        ],200);
+    }
+
     public function labels()
     {
         $data = Label::all();
