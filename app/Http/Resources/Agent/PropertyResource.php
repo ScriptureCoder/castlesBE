@@ -24,7 +24,7 @@ class PropertyResource extends Resource
             "id"=> $this->id,
             "title" => $this->title,
             "slug"=> $this->slug,
-            "price"=> $this->price,
+            "price"=> $this->price > 0? $this->price:"Price on call",
             "description"=> $this->description,
             "status"=> $this->property_status_id?$property->status->name:"",
             "type"=> $this->property_type_id?$property->type->name:"",

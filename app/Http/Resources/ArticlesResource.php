@@ -22,11 +22,12 @@ class ArticlesResource extends Resource
                 'name'=> $article->user->name,
                 'username'=> $article->user->username,
             ],
-            'image'=>$this->image?url("/articles/".$this->image):"https://via.placeholder.com/600x200.png?text=".str_replace(" ", "+",$this->title),
+            'image'=>$this->image?url("/articles/".$article->image->path):"https://via.placeholder.com/600x200.png?text=".str_replace(" ", "+",$this->title),
             'title'=>$this->title,
             'slug'=>$this->slug,
             'text'=>str_limit($this->text,100,"..."),
             'category'=> $article->category->name,
+            'comments_count'=> count($article->comments),
             'created_at'=> $this->created_at->toFormattedDateString()
         ];
     }

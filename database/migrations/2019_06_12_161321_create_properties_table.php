@@ -17,7 +17,7 @@ class CreatePropertiesTable extends Migration
             $table->bigIncrements('id');
             $table->integer("user_id");
             $table->string("title");
-            $table->integer("price");
+            $table->string("price")->default(0);
             $table->string("slug");
             $table->longText("description");
             $table->integer("property_status_id")->default(1);

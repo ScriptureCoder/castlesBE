@@ -28,6 +28,7 @@ class ArticleResource extends Resource
             'title'=>$this->title,
             'text'=> $this->text,
             'category'=> $article->category->name,
+            'category_slug'=> $article->category->slug,
             'created_at'=> $this->created_at->toFormattedDateString(),
             'comments'=> CommentResource::collection($article->comments),
             'previous'=> !$previous?false:[

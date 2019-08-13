@@ -28,7 +28,7 @@ class PropertiesResource extends Resource
                 "name"=> $agent->name,
             ],
             "slug"=> $this->slug,
-            "price"=> $this->price,
+            "price"=> $this->price > 0? $this->price:"Price on call",
             "description"=> str_limit($this->description,"150","..."),
             "status"=> $this->property_status_id?$property->status->name:"",
             "type"=> $this->property_type_id?$property->type->name:"",

@@ -11,6 +11,19 @@ class SearchController extends Controller
 {
     public function search(Request $request)
     {
+        $request->validate([
+            'status_id' => 'integer',
+            'type_id' => 'integer',
+            'bedrooms' => 'integer',
+            'bathrooms' => 'integer',
+            'toilets' => 'integer',
+            'parking' => 'integer',
+            'max_price' => 'integer',
+            'min_price' => 'integer',
+            'state_id' => 'integer',
+            'locality_id' => 'integer',
+        ]);
+
         $status = $request->status_id;
         $type = $request->type_id;
         $bedrooms = $request->bedrooms;

@@ -25,7 +25,7 @@ class PropertyRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:225',
-            'price' => 'required|integer',
+            'price' => 'integer',
             'description' => 'required|string',
             'status_id' => 'required|integer',
 //            'type_id' => 'integer',
