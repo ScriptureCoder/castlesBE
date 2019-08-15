@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Image;
 use App\Models\Locality;
 use App\Models\Property;
+use App\Models\PropertyAdvice;
 use App\Models\PropertyStatus;
 use App\Models\PropertyType;
 use App\Models\Subscriber;
@@ -113,6 +115,62 @@ class MigrationController extends Controller
         }
 
         return "done!";
+    }
+
+    public function articles()
+    {
+        $import = file_get_contents("articles.json", true);
+
+        foreach (json_decode($import) as $request){
+            if (!Article::find($request->ID)){
+                $query = DB::table('a12_postmeta')->where('post_id',$request->ID)->get();
+                $data = new Article();
+                $data->id = $request->ID;
+                $data->user_id = $request->post_author;
+                $data->title = $request->post_title;
+                $data->slug = $request->post_name;
+                $data->text = $request->post_content;
+
+
+                $query9 = DB::table('a12_term_relationships')->where('object_id', $request->ID)->get();
+
+
+                if ($query9->count() > 0){
+                    $tid = $query9[0]->term_taxonomy_id;
+
+                    $name = DB::table('a12_terms')->where('term_id', $tid)->first()->name;
+
+
+                    $lid = PropertyAdvice::where('name', 'LIKE', '%'.$name.'%')->first();
+                    if ($lid){
+                        $data->category_id = $lid->id;
+                    }else{
+                        $data->category_id = 4;
+
+                    }
+                }
+
+                $data->save();
+            }
+
+        }
+
+        return "done!";
+    }
+
+
+    public function agents()
+    {
+        $users = User::all();
+
+        foreach ($users as $user){
+            $prop = Property::where('user_id', $user->id)->first();
+            if ($prop){
+                $user->role_id = 2;
+                $user->save();
+            }
+        }
+        return "done";
     }
 
     public function users()

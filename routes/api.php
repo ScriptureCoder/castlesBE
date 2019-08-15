@@ -98,7 +98,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
         Route::get('/trash', 'Admin\PropertiesController@trash');
         Route::get('/{id}', 'Admin\PropertiesController@view');
 
-        Route::get('/{id}/pictures', 'Agent\PropertiesController@gallery');
+        Route::get('/{id}/pictures', 'Admin\PropertiesController@gallery');
         Route::post('/{id}/upload', 'Agent\PropertiesController@addToGallery');
         Route::post('/{id}/feature', 'Agent\PropertiesController@featureImage');
         Route::delete('/{id}/picture/delete/{image}', 'Agent\PropertiesController@removeFromGallery');
