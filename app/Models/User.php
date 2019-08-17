@@ -7,6 +7,7 @@ use App\Models\Country;
 use App\Models\Image;
 use App\Models\Property;
 use App\Models\Role;
+use App\Models\Search;
 use App\Models\State;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -72,6 +73,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Alert::class);
     }
+
+    /*public function search()
+    {
+        return $this->hasMany(Search::class);
+    }*/
 
 
 }

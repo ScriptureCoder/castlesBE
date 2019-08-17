@@ -69,11 +69,21 @@ class PropertiesController extends Controller
 
     public function agent(Request $request, $id)
     {
+        $agent = User::findOrFail($id);
         $data = Property::where("published", 1)->where('user_id', $id)->paginate($request->paginate?$request->paginate:10);
         PropertiesResource::collection($data);
 
         return response()->json([
             "status"=> 1,
+            "agent"=> [
+                "id"=> $agent->id,
+                "name"=> $agent->name,
+                "email"=> $agent->email,
+                "bio"=> $agent->bio,
+                "address"=> $agent->address,
+                "state"=> $agent->state?$agent->state->name:"",
+                "phone"=> $agent->phone
+            ],
             "data"=> $data,
         ],200);
     }
