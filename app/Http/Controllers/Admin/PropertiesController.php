@@ -4,12 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ImageRequest;
 use App\Http\Requests\PropertyRequest;
+use App\Http\Resources\Admin\EditPropertyResource;
+use App\Http\Resources\Agent\PropertiesResource;
+use App\Http\Resources\Agent\PropertyResource;
 use App\Http\Resources\GalleryResource;
-use App\Http\Resources\PropertiesResource;
-use App\Http\Resources\PropertyResource;
+use App\Http\Resources\PropertyReportResource;
+use App\Http\Resources\PropertyRequestResource;
+use App\Models\Alert;
 use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyGallery;
+use App\Models\PropertyReport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -22,23 +27,136 @@ class PropertiesController extends Controller
         $status = $request->status;
         $type = $request->type;
         $approved = $request->approved;
+        $featured = $request->featured;
+        $bedrooms = $request->bedrooms;
+        $bathrooms = $request->bathrooms;
+        $toilets = $request->toilets;
+        $furnished = $request->furnished;
+        $label = $request->label_id;
+        $state = $request->state_id;
+        $locality = $request->locality_id;
 
-        $query= Property::where("deleted_at", null)
-            ->when($status, function ($query) use ($status) {
+        $query= Property::when($status, function ($query) use ($status) {
                 return $query->where('property_status_id', $status);})
             ->when($type, function ($query) use ($type) {
                 return $query->where('property_type_id', $type);})
             ->when($approved, function ($query) use ($approved) {
                 return $query->where('approved', $approved);})
+            ->when($featured, function ($query) use ($featured) {
+                return $query->where('featured', $featured);})
+            ->when($bedrooms, function ($query) use ($bedrooms) {
+                return $query->where('bedrooms', $bedrooms);})
+            ->when($bathrooms, function ($query) use ($bathrooms) {
+                return $query->where('bathrooms', $bathrooms);})
+            ->when($toilets, function ($query) use ($toilets) {
+                return $query->where('toilets', $toilets);})
+            ->when($furnished, function ($query) use ($furnished) {
+                return $query->where('furnished', $furnished);})
+            ->when($label, function ($query) use ($label) {
+                return $query->where('label_id', $label);})
+            ->when($state, function ($query) use ($state) {
+                return $query->where('state_id', $state);})
+            ->when($locality, function ($query) use ($locality) {
+                return $query->where('locality_id', $locality);})
             ->orderBy('id', 'DESC');
 
         $data = $query->paginate($request->paginate?$request->paginate:10);
+        PropertiesResource::collection($data);
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+    }
+
+    public function edit($id)
+    {
+        $data = Property::findOrFail($id);
+        return response()->json([
+            "status"=> 1,
+            "data"=> new EditPropertyResource($data),
+        ],200);
+    }
+
+
+    public function save(PropertyRequest $request)
+    {
+        $slug = preg_replace("/[^a-zA-Z]/","-",strtolower($request->title));
+        $check = Property::where('slug', $slug)->first();
+
+        $data = $request->id? Property::findOrFail($request->id) : new Property();
+        $data->user_id = $request->agent_id?$request->agent_id:Auth::id();
+        $data->featured = $request->featured === !null;
+        $data->title = $request->title;
+        if ($check && $check->id !== $request->id){
+            $data->slug = $slug."-".rand(1000, 50000);
+        }else{
+            $data->slug = $slug;
+        }
+        $data->price = $request->price;
+        $data->description = $request->description;
+        $data->property_status_id = $request->status_id;
+        $data->property_type_id = $request->type_id;
+        $data->bedrooms = $request->bedrooms;
+        $data->bathrooms = $request->bathrooms;
+        $data->toilets = $request->toilets;
+        $data->furnished = $request->furnished === !null;
+        $data->serviced = $request->serviced === !null;
+        $data->parking = $request->parking;
+        $data->total_area = $request->total_area;
+        $data->covered_area = $request->covered_area;
+        $data->address = $request->address;
+//        $data->country_id = $request->country_id;
+        $data->state_id = $request->state_id;
+        $data->locality_id = $request->locality_id;
+        $data->save();
 
         return response()->json([
             "status"=> 1,
-            "data"=> PropertiesResource::collection($data),
-            "pagination"=> $data,
-            "count"=> $query->count(),
+            "message"=> "Saved Successfully!",
+            "data"=> [
+                "id"=> $data->id,
+            ]
+        ],200);
+
+
+    }
+
+    public function multiple(Request $request)
+    {
+        foreach ($request->request as $request) {
+            $slug = preg_replace("/[^a-zA-Z]/","-",strtolower($request['title']));
+            $check = Property::where('slug', $slug)->first();
+
+            $data = new Property();
+            $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
+            $data->featured = $request['featured'] === !null;
+            $data->title = $request['title'];
+            if ($check){
+                $data->slug = $slug."-".rand(1000, 50000);
+            }else{
+                $data->slug = $slug;
+            }
+            $data->price = $request['price'];
+            $data->description = $request['description'];
+            $data->property_status_id = $request['status_id'];
+            $data->property_type_id = $request['type_id'];
+            $data->bedrooms = $request['bedrooms'];
+            $data->bathrooms = $request['bathrooms'];
+            $data->toilets = $request['toilets'];
+            $data->furnished = $request['furnished'] === !null;
+            $data->serviced = $request['serviced'] === !null;
+            $data->parking = $request['parking'];
+            $data->total_area = $request['total_area'];
+            $data->covered_area = $request['covered_area'];
+            $data->address = $request['address'];
+            $data->state_id = $request['state_id'];
+            $data->locality_id = $request['locality_id'];
+            $data->save();
+
+        }
+        return response()->json([
+            "status"=> 1,
+            "message"=> "Properties added successfully!",
         ],200);
     }
 
@@ -52,32 +170,11 @@ class PropertiesController extends Controller
         ],200);
     }
 
-    public function save(PropertyRequest $request)
-    {
-        $data = $request->id? Property::find($request->id) : new Property();
-        $data->user_id = $data->agent_id?$data->agent_id:Auth::id();
-        $data->title = $request->title;
-        $data->slug = preg_replace("/[^a-zA-Z]/","-",strtolower($request->title));
-        $data->price = $request->price;
-        $data->description = $request->description;
-        $data->property_status_id = $request->status_id;
-        $data->property_type_id = $request->type_id;
-        $data->featured = $request->featured === !null;
-        $data->bedrooms = $request->bedrooms;
-        $data->bathrooms = $request->bathrooms;
-        $data->toilets = $request->toilets;
-        $data->address = $request->address;
-//        $data->country_id = $request->country_id;
-        $data->state_id = $request->state_id;
-        $data->city_id = $request->city_id;
-        $data->save();
 
-        return response()->json([
-            "status"=> 1,
-            "message"=> "Saved Successfully!",
-        ],200);
-    }
-
+    /**
+     * $request param is the file to be uploaded
+     * $user param is the user_id of the uploader
+    */
     public static function image($request, $user)
     {
         $image = Storage::disk(env("STORAGE"))->put('/properties', $request);
@@ -125,7 +222,7 @@ class PropertiesController extends Controller
         }
         return response()->json([
             "status"=> 1,
-            "message"=> "Remove successfully!"
+            "message"=> "Removed successfully!"
         ]);
     }
 
@@ -161,18 +258,17 @@ class PropertiesController extends Controller
     }
 
 
-    public function delete($ids)
+    public function delete(Request $request)
     {
-        if (is_array($ids)) {
-            foreach ($ids as $id) {
+        if (is_array($request->id)) {
+            foreach ($request->id as $id) {
                 $data = Property::findOrFail($id);
                 $data->delete();
             }
         }else{
-            $data = Property::findOrFail($ids);
+            $data = Property::findOrFail($request->id);
             $data->delete();
         }
-
 
         return response()->json([
             "status"=> 1,
@@ -180,15 +276,15 @@ class PropertiesController extends Controller
         ],200);
     }
 
-    public function destroy($ids)
+    public function destroy(Request $request)
     {
-        if (is_array($ids)){
-            foreach ($ids as $id) {
-                $data = Property::onlyTrashed()->findOrFail($id);
+        if (is_array($request->id)){
+            foreach ($request->id as $id) {
+                $data = Property::withTrashed()->findOrFail($id);
                 $data->forceDelete();
             }
         }else{
-            $data = Property::onlyTrashed()->findOrFail($ids);
+            $data = Property::withTrashed()->findOrFail($request->id);
             $data->forceDelete();
         }
 
@@ -198,45 +294,81 @@ class PropertiesController extends Controller
         ],200);
     }
 
-    public function approve($ids)
+    public function approve(Request $request)
     {
-        if (is_array($ids)){
-            foreach ($ids as $id){
+        if (is_array($request->id)){
+            foreach ($request->id as $id){
                 $data = Property::findOrFail($id);
-                $data->approved = true;
+                $data->published = true;
                 $data->save();
             }
         }else{
-            $data = Property::findOrFail($ids);
-            $data->approved = true;
+            $data = Property::findOrFail($request->id);
+            $data->published = true;
             $data->save();
         }
 
         return response()->json([
             "status"=> 1,
-            "message"=> "Approved Successfully!",
+            "message"=> "Successful!",
         ],200);
     }
 
 
-    public function disapprove($ids)
+    public function disapprove(Request $request)
     {
-        if (is_array($ids)){
-            foreach ($ids as $id){
+        if (is_array($request->id)){
+            foreach ($request->id as $id){
                 $data = Property::findOrFail($id);
-                $data->approved = false;
+                $data->published = false;
                 $data->save();
             }
         }else{
-            $data = Property::findOrFail($ids);
-            $data->approved = false;
+            $data = Property::findOrFail($request->id);
+            $data->published = false;
             $data->save();
         }
 
         return response()->json([
             "status"=> 1,
-            "message"=> "Approved Successfully!",
+            "message"=> "Successful!",
         ],200);
+    }
+
+    public function requests()
+    {
+        $data = \App\Models\PropertyRequest::orderBy('id', 'DESC')
+            ->paginate(request("paginate")?request("paginate"):10);
+        PropertyRequestResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            'data'=> $data
+        ]);
+    }
+
+    public function reports(Request $request)
+    {
+        $data = PropertyReport::orderBy('id', 'DESC')
+            ->paginate(request("paginate")?request("paginate"):10);
+        PropertyReportResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            'data'=> $data
+        ]);
+    }
+
+    public function propertyReports($id)
+    {
+        $data = PropertyReport::where('property_id', $id)
+            ->orderBy('id', 'DESC')->paginate(request("paginate")?request("paginate"):10);
+        PropertyReportResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            'data'=> $data
+        ]);
     }
 
     public function trash()

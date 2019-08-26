@@ -24,6 +24,7 @@ class PropertyResource extends Resource
 
         return [
             "id"=> $this->id,
+            "title" => $this->title,
             "agent"=> [
                 "id" => $agent->id,
                 "name"=> $agent->name,
@@ -32,7 +33,7 @@ class PropertyResource extends Resource
                 "email"=> $agent->email
             ],
             "slug"=> $this->slug,
-            "price"=> $this->price,
+            "price"=> $this->price > 0? $this->price:"Price on call",
             "description"=> $this->description,
             "status"=> $this->property_status_id?$property->status->name:"",
             "type"=> $this->property_type_id?$property->type->name:"",
@@ -51,7 +52,6 @@ class PropertyResource extends Resource
             "country"=> $this->state_id? $property->country->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
-            "views"=> $this->views,
             "pictures"=> GalleryResource::collection($property->gallery),
             "features"=> FeaturesResource::collection($property->features),
             "created_at"=> $this->created_at->diffForHumans()

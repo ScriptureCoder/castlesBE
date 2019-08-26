@@ -24,7 +24,21 @@ class PropertyRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|string|max:225',
+            'price' => 'integer',
+            'description' => 'required|string',
+            'status_id' => 'required|integer',
+//            'type_id' => 'integer',
+//            'bedrooms' => 'integer',
+//            'bathrooms' => 'integer',
+//            'toilets' => 'integer',
+//            'parking' => 'integer',
+//            'total_area' => 'integer',
+//            'covered_area' => 'integer',
+            'state_id' => 'required|integer',
+            'locality_id' => 'required|integer',
+            'address' => 'required|string',
+//            'label_id' => 'integer',
         ];
     }
 }

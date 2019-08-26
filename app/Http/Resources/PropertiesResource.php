@@ -35,7 +35,7 @@ class PropertiesResource extends Resource
             "type"=> $this->property_type_id?$property->type->name:"",
             "featured"=> !!$this->featured,
             "label"=> $this->label_id? $property->label->name:"",
-            "image"=> $this->image_id? $property->image->url:"",
+            "image"=> $this->image_id? env("STORAGE") !== "local"? env("STORAGE_PATH")."".$property->image->path:url("/storage/".$property->image->path):"",
             "bedrooms"=> $this->bedrooms,
             "bathrooms"=> $this->bathrooms,
             "toilets"=> $this->toilets,
@@ -43,11 +43,10 @@ class PropertiesResource extends Resource
             "serviced"=> !!$this->serviced,
             "parking"=> $this->parking,
             "total_area"=> $this->total_area,
-            "country"=> $this->state_id? $property->country->name:"",
+            "state"=> $this->state_id? $property->state->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
-            "views"=> $this->views,
-            "created_at"=> $this->created_at->diffForHumans()
+            "created_at"=> $this->created_at->diffForHumans(),
         ];
     }
 }

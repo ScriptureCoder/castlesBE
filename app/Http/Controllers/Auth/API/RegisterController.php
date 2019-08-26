@@ -67,7 +67,7 @@ class RegisterController extends Controller
         $email = [
             "subject"=> 'Welcome to '.env("APP_NAME"),
             'email' => $request->email,
-            "html"=> "<p>Hello $fname, <br> kindly click on the link bellow to activate your account <br> <a href='$link'>$link</a></p>"
+            "html"=> "<p>Hello $fname, <br> kindly click on the link below to verify your account <br> <a href='$link'>$link</a></p>"
         ];
 
         Mailer::send($email);
@@ -94,7 +94,6 @@ class RegisterController extends Controller
 
         if (!Subscriber::where('email',$request->email)->first()) {
             $sub= new Subscriber();
-            $sub->name= $request->name;
             $sub->email= $request->email;
             $sub->save();
             $response['status'] = 1;
@@ -113,14 +112,72 @@ class RegisterController extends Controller
         $user=User::find(auth()->id());
         $link = env("APP_URL")."/activate/".$user->remember_token;
         $email = [
+            "email"=> $user->email,
             "subject"=> 'Welcome to'.env("APP_NAME").'confirmation code',
-            "html"=> "<p>Hello $user->username, <br> kindly follow the link bellow to verify your account <br> <a href='$link'>$link</a></p>"
+            "html"=> "<p>Hello $user->username, <br> kindly follow the link below to verify your account <br> <a href='$link'>$link</a></p>"
         ];
         Mailer::send($email);
 
         $response['status'] = 1;
         $response['message']= "Sent Successfully!, Please check your email";
         return response()->json($response, 200);
+    }
+
+
+    public function oauth(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'name' => 'required|string',
+            'provider' => 'required|string',
+            'role' => 'integer',
+        ]);
+
+        $user = User::where("email", $request->email)->first();
+
+        if (!$user){
+            $user= new User();
+            $user->provider= $request->provider;
+            $user->name= $request->name;
+            $user->email= $request->email;
+            $user->password= bcrypt("g3n3r@8p@33w0rd");
+            $user->role_id= $request->role > 2?1:$request->role;
+            $user->remember_token= Str::random(100);
+            $user->save();
+
+            if (!Subscriber::where('email',$request->email)->first()) {
+                $sub= new Subscriber();
+                $sub->user_id= $user->id;
+                $sub->email= $request->email;
+                $sub->save();
+            }
+            /*Authenticate user and return token*/
+            $tokenResult = $user->createToken('Personal Access Token');
+            $token = $tokenResult->token;
+            $token->save();
+
+            return response()->json([
+                'status'=> 1,
+                'message'=> 'Kindly check your email for activation link',
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => $tokenResult->token->expires_at
+            ]);
+        }
+
+        /*Authenticate user and return token*/
+        $tokenResult = $user->createToken('Personal Access Token');
+        $token = $tokenResult->token;
+        $token->save();
+
+        return response()->json([
+            'status'=> 1,
+            'message'=> 'Kindly check your email for activation link',
+            'access_token' => $tokenResult->accessToken,
+            'token_type' => 'Bearer',
+            'expires_at' => $tokenResult->token->expires_at
+        ]);
+
     }
 
 

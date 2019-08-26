@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Models\Alert;
 use App\Models\Country;
 use App\Models\Image;
 use App\Models\Property;
 use App\Models\Role;
+use App\Models\Search;
 use App\Models\State;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -33,6 +35,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public function image()
@@ -60,6 +63,21 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function savedProperties()
+    {
+        return $this->belongsToMany(Property::class, 'saved_properties');
+    }
+
+    public function alerts()
+    {
+        return $this->hasMany(Alert::class);
+    }
+
+    /*public function search()
+    {
+        return $this->hasMany(Search::class);
+    }*/
 
 
 }

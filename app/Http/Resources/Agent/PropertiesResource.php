@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources\Agent;
 
+use App\Http\Resources\GalleryResource;
 use App\Models\Property;
+use App\User;
 use Illuminate\Http\Resources\Json\Resource;
 
 class PropertiesResource extends Resource
@@ -16,18 +18,24 @@ class PropertiesResource extends Resource
     public function toArray($request)
     {
         $property = Property::find($this->id);
+        $agent = User::withTrashed()->find($this->user_id);
 
         return [
             "id"=> $this->id,
             "title" => $this->title,
+            "agent"=> [
+                "id" => $agent->id,
+                "name"=> $agent->name,
+            ],
             "slug"=> $this->slug,
-            "price"=> $this->price,
+            "price"=> $this->price > 0? $this->price:"Price on call",
             "description"=> str_limit($this->description,"150","..."),
             "status"=> $this->property_status_id?$property->status->name:"",
             "type"=> $this->property_type_id?$property->type->name:"",
             "featured"=> !!$this->featured,
             "label"=> $this->label_id? $property->label->name:"",
             "image"=> $this->image_id?env("STORAGE") !== "local"? env("STORAGE_PATH")."".$property->image->path:url("/storage/".$property->image->path):"",
+            "pictures"=> GalleryResource::collection($property->gallery),
             "bedrooms"=> $this->bedrooms,
             "bathrooms"=> $this->bathrooms,
             "toilets"=> $this->toilets,
@@ -35,11 +43,11 @@ class PropertiesResource extends Resource
             "serviced"=> !!$this->serviced,
             "parking"=> $this->parking,
             "total_area"=> $this->total_area,
-            "country"=> $this->state_id? $property->country->name:"",
+            "state"=> $this->state_id? $property->state->name:"",
             "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
             "published"=> !!$this->published,
-            "views"=> $this->views,
+            "views"=> $property->views()->sum("views"),
             "created_at"=> $this->created_at->diffForHumans()
         ];
     }

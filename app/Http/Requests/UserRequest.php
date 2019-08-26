@@ -24,10 +24,13 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|alpha_dash|string|max:25',
-            'name' => 'required|string',
-            'phone' => 'required|string',
+            'username' => 'required|alpha_dash|string|max:255',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:12',
             'country_id' => 'integer',
+            'state_id' => 'integer',
+            'address' => 'string|max:255',
+            'bio' => 'string|max:1000',
         ];
     }
 }

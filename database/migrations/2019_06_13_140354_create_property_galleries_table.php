@@ -15,8 +15,8 @@ class CreatePropertyGalleriesTable extends Migration
     {
         Schema::create('property_galleries', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer("property_id");
-            $table->string("image_id");
+            $table->integer('image_id')->nullable();
+            $table->integer('property_id')->nullable();
         });
     }
 

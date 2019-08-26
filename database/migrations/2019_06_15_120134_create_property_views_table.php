@@ -15,8 +15,8 @@ class CreatePropertyViewsTable extends Migration
     {
         Schema::create('property_views', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer("user_id");
             $table->integer("property_id");
+            $table->integer("views");
             $table->timestamps();
         });
     }
