@@ -20,4 +20,14 @@ class Search extends Model
     {
         return $this->belongsTo(State::class);
     }
+
+    public function status()
+    {
+        return $this->belongsTo(PropertyStatus::class, "status_id");
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(PropertyType::class, "type_id");
+    }
 }

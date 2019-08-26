@@ -17,6 +17,7 @@ class CreateSearchesTable extends Migration
             $table->increments('id');
             $table->integer("bedrooms")->nullable();
             $table->integer("bathrooms")->nullable();
+            $table->integer("user_id")->nullable();
             $table->integer("type_id")->nullable();
             $table->integer("locality_id")->nullable();
             $table->integer("state_id")->nullable();

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PropertiesResource;
+use App\Http\Resources\SearchResource;
 use App\Models\Property;
 use App\Models\Search;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
@@ -76,6 +78,9 @@ class SearchController extends Controller
         $data->bedrooms = $request->bedrooms;
         $data->bathrooms = $request->bathrooms;
         $data->type_id = $request->type_id;
+        if ($request->auth){
+            $data->user_id = $request->auth['id'];
+        }
         $data->status_id = $request->status_id;
         $data->min_price = $request->min_price;
         $data->max_price = $request->max_price;
@@ -85,5 +90,17 @@ class SearchController extends Controller
 
         return $data->id;
     }
+
+    public function history()
+    {
+        $data = Search::where('user_id', Auth::id())->paginate(\request('paginate')?\request('paginate'):10);
+        SearchResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+    }
+
 
 }

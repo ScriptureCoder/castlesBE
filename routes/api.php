@@ -47,7 +47,8 @@ Route::post('/report_property', 'PropertiesController@report')->middleware(['aut
 Route::post('/request_property', 'PropertiesController@request')->middleware(['if_auth']);
 
 /**Search and Alert end-points*/
-Route::get('/search', 'SearchController@search');
+Route::get('/search', 'SearchController@search')->middleware(['if_auth']);
+Route::get('/search_history', 'SearchController@history')->middleware(['auth:api']);
 Route::post('/alert/save', 'AlertController@save')->middleware(['if_auth']);
 Route::get('/alerts', 'AlertController@index')->middleware(['auth:api']);
 Route::delete('/alert/delete/{id}', 'AlertController@delete')->middleware(['auth:api']);
