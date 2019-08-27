@@ -17,7 +17,7 @@ class GalleryResource extends Resource
     {
         return [
             "id"=> $this->id,
-            "image"=> env("STORAGE") !== "local"? env("STORAGE_PATH")."".Image::find($this->id)->path:url("/storage/".Image::find($this->id)->path),
+            "image"=> env("STORAGE") !== "local"? env("STORAGE_PATH")."".Image::find($this->id)->path:url("/storage".Image::find($this->id)->path),
         ];
     }
 }
