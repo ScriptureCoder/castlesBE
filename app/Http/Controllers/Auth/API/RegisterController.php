@@ -141,7 +141,7 @@ class RegisterController extends Controller
             $user->name= $request->name;
             $user->email= $request->email;
             $user->password= bcrypt("g3n3r@8p@33w0rd");
-            $user->role_id= $request->role > 2?1:$request->role;
+            $user->role_id= $request->role?$request->role > 2?1:$request->role:1;
             $user->remember_token= Str::random(100);
             $user->save();
 
