@@ -143,6 +143,7 @@ class RegisterController extends Controller
             $user->password= bcrypt("g3n3r@8p@33w0rd");
             $user->role_id= $request->role?$request->role > 2?1:$request->role:1;
             $user->remember_token= Str::random(100);
+            $user->email_verified_at= Carbon::now();
             $user->save();
 
             if (!Subscriber::where('email',$request->email)->first()) {
@@ -156,12 +157,14 @@ class RegisterController extends Controller
             $token = $tokenResult->token;
             $token->save();
 
+
+
             return response()->json([
                 'status'=> 1,
-                'message'=> 'Kindly check your email for activation link',
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
-                'expires_at' => $tokenResult->token->expires_at
+                'expires_at' => $tokenResult->token->expires_at,
+                'user' => new UserResource($user)
             ]);
         }
 
@@ -172,10 +175,10 @@ class RegisterController extends Controller
 
         return response()->json([
             'status'=> 1,
-            'message'=> 'Kindly check your email for activation link',
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
-            'expires_at' => $tokenResult->token->expires_at
+            'expires_at' => $tokenResult->token->expires_at,
+            'user' => new UserResource($user)
         ]);
 
     }
