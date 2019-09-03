@@ -36,7 +36,7 @@ class PasswordController extends Controller
             </p>
 
             <div>
-                    <a onmouseover='this.style.border=\"white\"' style=\"background-color: blue; border: none; color: white; padding: 10px 30px; text-align: center; text-decoration: none; margin: 5px 0 5px 0;\" href=\"{{$link}}\" target=\"_blank\">Reset Password</a>
+                    <a onmouseover='this.style.border=\"white\"' style=\"background-color: blue; border: none; color: white; padding: 10px 30px; text-align: center; text-decoration: none; margin: 5px 0 5px 0;\" href=\"$link\" target=\"_blank\">Reset Password</a>
             </div>
 
 
@@ -44,7 +44,7 @@ class PasswordController extends Controller
 
             <p>Regards,</p>
 
-            <h6>If you're having trouble clicking the \"Reset Password\" button, copy and paste the URL below into your web browser:<br><a href=\"{{$link}}\">{{$link}}</a></h6>
+            <h6>If you're having trouble clicking the \"Reset Password\" button, copy and paste the URL below into your web browser:<br><a href=\"$link\">$link</a></h6>
                 "
             ];
 
