@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8109c724-e475-4eb9-b5cd-fa6e095a95c5" name="Default Changelist" comment="" />
+    <list default="true" id="8109c724-e475-4eb9-b5cd-fa6e095a95c5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UsersController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="45" column="43" lean-forward="true" selection-start-line="45" selection-start-column="43" selection-end-line="45" selection-end-column="43" />
+            <state relative-caret-position="165">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
             </state>
           </provider>
         </entry>
@@ -26,7 +28,7 @@
         <entry file="file://$PROJECT_DIR$/app/Http/Resources/UserResource.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="390">
-              <caret line="30" column="61" lean-forward="true" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
+              <caret line="30" column="61" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -292,10 +294,10 @@
       <path value="$PROJECT_DIR$/vendor/aws/aws-sdk-php-laravel" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
+  <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1680" />
-    <option name="height" value="949" />
+    <option name="height" value="947" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -451,7 +453,10 @@
       <workItem from="1567062757994" duration="155000" />
       <workItem from="1567065677974" duration="313000" />
       <workItem from="1567165817483" duration="397000" />
-      <workItem from="1567417150565" duration="2858000" />
+      <workItem from="1567417150565" duration="5062000" />
+      <workItem from="1567449881886" duration="223000" />
+      <workItem from="1567468291941" duration="1529000" />
+      <workItem from="1567478012746" duration="592000" />
     </task>
     <task id="LOCAL-00001" summary="migration update">
       <created>1560336745447</created>
@@ -751,13 +756,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="306388000" />
+    <option name="totallyTimeSpent" value="310936000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <frame x="0" y="23" width="1680" height="947" extended-state="1" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16971917" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17521368" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -772,7 +777,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32959184" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.17755102" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.17660819" />
       <window_info anchor="bottom" id="Command Line Tools Console" order="12" weight="0.32924962" />
       <window_info anchor="bottom" id="GraphQL" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -1091,27 +1096,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="20" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/storage/app/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Resources/GalleryResource.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -1160,17 +1144,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Resources/UserResource.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UsersController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="30" column="61" lean-forward="true" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
+        <state relative-caret-position="165">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UsersController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Resources/UserResource.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="45" column="43" lean-forward="true" selection-start-line="45" selection-start-column="43" selection-end-line="45" selection-end-column="43" />
+        <state relative-caret-position="390">
+          <caret line="30" column="61" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="20" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/storage/app/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Resources/GalleryResource.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>

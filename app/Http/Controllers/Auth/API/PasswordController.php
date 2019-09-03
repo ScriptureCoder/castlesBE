@@ -28,7 +28,7 @@ class PasswordController extends Controller
 
             $data = [
                 'email' => $request->email,
-                'subject' => $request->subject,
+                'subject' => "Reset Password",
                 'html'=> "
                 <p><strong>Hello!</strong></p>
             <p>
