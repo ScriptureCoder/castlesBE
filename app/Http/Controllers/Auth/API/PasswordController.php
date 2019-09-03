@@ -24,7 +24,7 @@ class PasswordController extends Controller
             $token->token = Str::random(100);
             $token->expired_at = new Carbon("+24 hours");
             $token->save();
-            $link = env("APP_URL")."/reset_password/".$token->token;
+            $link = env("APP_URL")."/reset-password/".$token->token;
 
             $data = [
                 'email' => $request->email,
