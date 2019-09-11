@@ -39,7 +39,7 @@ class PropertyResource extends Resource
             "type"=> $this->property_type_id?$property->type->name:"",
             "featured"=> !!$this->featured,
             "label"=> $this->label_id? $property->label->name:"",
-            "image"=> $this->image_id? env("STORAGE") !== "local"? env("STORAGE_PATH")."".$property->image->path:url("/storage/".$property->image->path):"",
+            "image"=> $this->image_id? env("STORAGE") !== "local"? env("STORAGE_PATH")."".$property->image->path:url("/storage".$property->image->path):"",
             "bedrooms"=> $this->bedrooms,
             "bathrooms"=> $this->bathrooms,
             "toilets"=> $this->toilets,
