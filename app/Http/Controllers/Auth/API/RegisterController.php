@@ -39,7 +39,8 @@ class RegisterController extends Controller
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
-            )->toDateTimeString()
+            )->toDateTimeString(),
+            'user'=> new UserResource($user)
         ]);
     }
 
@@ -81,7 +82,8 @@ class RegisterController extends Controller
             'message'=> 'Kindly check your email for activation link',
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
-            'expires_at' => $tokenResult->token->expires_at
+            'expires_at' => $tokenResult->token->expires_at,
+            'user'=> new UserResource($user)
         ]);
     }
 

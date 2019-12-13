@@ -21,7 +21,7 @@ class PropertiesController extends Controller
 
     public function index()
     {
-        $data = Auth::user()->properties()->paginate(request("paginate")?request("paginate"):10);
+        $data = Auth::user()->properties()->orderBy("id", "DESC")->paginate(request("paginate")?request("paginate"):10);
         PropertiesResource::collection($data);
         return response()->json([
             "status"=> 1,

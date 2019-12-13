@@ -26,6 +26,7 @@ class PropertiesResource extends Resource
             "agent"=> [
                 "id" => $agent->id,
                 "name"=> $agent->name,
+                "phone"=> $agent->phone
             ],
             "slug"=> $this->slug,
             "price"=> $this->price > 0? $this->price:"Price on call",
