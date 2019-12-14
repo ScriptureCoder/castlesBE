@@ -28,6 +28,7 @@ class UserResource extends Resource
             'username'=> $this->username,
             'phone'=> $this->phone,
             'whatsapp'=> $this->whatsapp,
+            'bio'=> $this->bio,
             'email'=> $this->email,
             'image'=> $image? env("STORAGE") !== "local"? env("STORAGE_PATH")."".$image->path:url("/storage/".$image->path):"",
             'isVerified'=> $this->email_verified_at == !null,
