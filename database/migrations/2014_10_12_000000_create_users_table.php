@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->mediumText("bio")->nullable();
             $table->integer("country_id")->default(160);
             $table->integer("state_id")->nullable();
-            $table->string("whatsapp")->nullable();
+            $table->string("phone")->nullable();
             $table->string("whatsapp")->nullable();
             $table->integer("role_id")->default(1);
             $table->timestamp('email_verified_at')->nullable();
