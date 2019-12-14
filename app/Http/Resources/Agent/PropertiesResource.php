@@ -30,7 +30,7 @@ class PropertiesResource extends Resource
             ],
             "slug"=> $this->slug,
             "price"=> $this->price > 0? $this->price:"Price on call",
-            "description"=> str_limit($this->description,"150","..."),
+            "description"=> str_limit($this->description,"50","..."),
             "status"=> $this->property_status_id?$property->status->name:"",
             "type"=> $this->property_type_id?$property->type->name:"",
             "featured"=> !!$this->featured,
@@ -44,8 +44,14 @@ class PropertiesResource extends Resource
             "serviced"=> !!$this->serviced,
             "parking"=> $this->parking,
             "total_area"=> $this->total_area,
-            "state"=> $this->state_id? $property->state->name:"",
-            "locality"=> $this->locality_id? $property->locality->name:"",
+            "state"=> $this->state_id? [
+                "name"=> $property->state->name,
+                "id"=> $property->state->id
+            ]:"",
+            "locality"=> $this->locality_id? [
+                "name"=> $property->locality->name,
+                "id"=> $property->locality->id
+            ]:"",
             "address"=> $this->address,
             "published"=> !!$this->published,
             "views"=> $property->views()->sum("views"),

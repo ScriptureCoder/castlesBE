@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\API;
 
 use App\Http\Controllers\Statics\Mailer;
 use App\Http\Requests\ResetRequest;
+use App\Http\Resources\UserResource;
 use App\Models\PasswordReset;
 use App\User;
 use Carbon\Carbon;
@@ -69,9 +70,19 @@ class PasswordController extends Controller
             $data->save();
             $token->delete();
 
-            $response['status'] = 1;
-            $response['message']= "Password changed!, kindly login to continue!";
-            return response()->json($response, 200);
+            $tokenResult = $data->createToken('Personal Access Token');
+            $token = $tokenResult->token;
+            $token->save();
+
+            return response()->json([
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse(
+                    $tokenResult->token->expires_at
+                )->toDateTimeString(),
+                "message"=> "Password changed!, kindly login to continue!",
+                'user'=> new UserResource($data)
+            ]);
         }
 
         $response['status'] = 0;

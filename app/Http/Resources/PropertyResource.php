@@ -29,6 +29,7 @@ class PropertyResource extends Resource
                 "id" => $agent->id,
                 "name"=> $agent->name,
                 "phone"=> $agent->phone,
+                "whatsapp"=> $agent->whatsapp,
                 "username"=> $agent->username,
                 "email"=> $agent->email
             ],

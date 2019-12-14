@@ -44,6 +44,7 @@ class UsersController extends Controller
             $data->address = $request->address;
             $data->bio = $request->bio;
             $data->phone = $request->phone;
+            $data->whatsapp = $request->whatsapp;
             $data->country_id = $request->country_id;
             $data->state_id = $request->state_id;
             $data->save();
