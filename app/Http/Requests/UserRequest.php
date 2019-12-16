@@ -26,11 +26,12 @@ class UserRequest extends FormRequest
         return [
             'username' => 'required|alpha_dash|string|max:255',
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:12',
+            'phone' => 'required|string|max:25',
+            'whatsapp' => 'string|max:25',
             'country_id' => 'integer',
             'state_id' => 'integer',
             'address' => 'string|max:255',
-            'bio' => 'string|max:1000',
+            'bio' => 'max:1000',
         ];
     }
 }

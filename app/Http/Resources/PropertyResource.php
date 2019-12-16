@@ -49,13 +49,20 @@ class PropertyResource extends Resource
             "parking"=> $this->parking,
             "total_area"=> $this->total_area,
             "covered_area"=> $this->covered_area,
-            "state"=> $this->state_id? $property->state->name:"",
+            "state"=> $this->state_id? [
+                "name"=> $property->state->name,
+                "id"=> $property->state->id
+            ]:"",
+            "locality"=> $this->locality_id? [
+                "name"=> $property->locality->name,
+                "id"=> $property->locality->id
+            ]:"",
             "country"=> $this->state_id? $property->country->name:"",
-            "locality"=> $this->locality_id? $property->locality->name:"",
             "address"=> $this->address,
             "pictures"=> GalleryResource::collection($property->gallery),
             "features"=> FeaturesResource::collection($property->features),
-            "created_at"=> $this->created_at->diffForHumans()
+            "created_at"=> $this->created_at->diffForHumans(),
+            "updated_at"=> $this->updated_at->diffForHumans()
         ];
     }
 }
