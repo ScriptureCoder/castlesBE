@@ -16,20 +16,17 @@ class AnalyticsController extends Controller
 {
     public function index()
     {
-        $data = collect();
-        $data->push([
-            'users'=>User::count(),
-            'agents'=>User::where('role_id', 2)->count(),
-            'individuals'=>User::where('role_id', 1)->count(),
-            'subscribers'=>Subscriber::count(),
-            'properties'=> Property::count(),
-            'reports'=> PropertyReport::count(),
-            'requests'=> PropertyRequest::count(),
-        ]);
-
         return response()->json([
             "status"=> 1,
-            "data"=> $data
+            "data"=> [
+                'users'=>User::count(),
+                'agents'=>User::where('role_id', 2)->count(),
+                'individuals'=>User::where('role_id', 1)->count(),
+                'subscribers'=>Subscriber::count(),
+                'properties'=> Property::count(),
+                'reports'=> PropertyReport::count(),
+                'requests'=> PropertyRequest::count(),
+            ]
         ],200);
     }
 
