@@ -62,6 +62,7 @@ class UsersController extends Controller
         $user->username= $request->username;
         $user->name= $request->name;
         $user->email= $request->email;
+        $user->phone= $request->phone;
         $user->password= bcrypt($request->password);
         $user->role_id= $request->role > 4?1:$request->role;
         $user->remember_token= Str::random(100);

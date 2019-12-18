@@ -25,7 +25,8 @@ class UsersController extends Controller
 
     public function agents(Request $request)
     {
-        $data = User::where("email_verified_at", !null)->where('role_id', 2)->paginate($request->paginate?$request->paginate:10);
+//        $data = User::where("email_verified_at", !null)->where('role_id', 2)->paginate($request->paginate?$request->paginate:10);
+        $data = User::where('role_id', 2)->paginate($request->paginate?$request->paginate:10);
         AgentsResource::collection($data);
 
         return response()->json([

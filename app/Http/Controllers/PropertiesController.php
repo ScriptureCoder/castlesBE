@@ -82,7 +82,8 @@ class PropertiesController extends Controller
                 "bio"=> $agent->bio,
                 "address"=> $agent->address,
                 "state"=> $agent->state?$agent->state->name:"",
-                "phone"=> $agent->phone
+                "phone"=> $agent->phone,
+                "image"=> $agent->image_id? env("STORAGE") !== "local"? env("STORAGE_PATH")."".$agent->image->path:url("/storage/".$agent->image->path):"",
             ],
             "data"=> $data,
         ],200);

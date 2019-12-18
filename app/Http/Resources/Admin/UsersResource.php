@@ -27,6 +27,7 @@ class UsersResource extends Resource
             'name'=> $this->name,
             'username'=> $this->username,
             'email'=> $this->email,
+            'phone'=> $this->phone,
             'image'=> $image? env("STORAGE") !== "local"? env("STORAGE_PATH")."".$image->path:url("/storage/".$image->path):"",
             'isVerified'=> $this->email_verified_at == !null,
             'role'=> ["id"=>$this->role_id, "name"=> Role::find($this->role_id)->name],

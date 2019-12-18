@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\EditPropertyResource;
 use App\Http\Resources\Agent\PropertiesResource;
 use App\Http\Resources\Agent\PropertyResource;
 use App\Http\Resources\GalleryResource;
+use App\Http\Resources\ListAllAgentsResource;
 use App\Http\Resources\PropertyReportResource;
 use App\Http\Resources\PropertyRequestResource;
 use App\Models\Alert;
@@ -15,6 +16,7 @@ use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyGallery;
 use App\Models\PropertyReport;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +67,27 @@ class PropertiesController extends Controller
         return response()->json([
             "status"=> 1,
             "data"=> $data,
+        ],200);
+    }
+
+
+    public function listAllAgents()
+    {
+        $data = User::where("role_id", 2)->get();
+        return response()->json([
+            "status"=> 1,
+            "data"=> ListAllAgentsResource::collection($data),
+        ],200);
+    }
+
+    public function feature($id)
+    {
+        $data = Property::findOrFail($id);
+        $data->featured = !$data->featured;
+        $data->save();
+        return response()->json([
+            "status"=> 1,
+            "message"=> "successful",
         ],200);
     }
 
