@@ -18,7 +18,8 @@ class MagazineResource extends Resource
             "id"=> $this->id,
             "title"=> $this->title,
             "image"=> env("STORAGE") !== "local"? env("STORAGE_PATH")."".$this->image:url("/storage/".$this->image),
-            "description"=> $this->description
+            "description"=> $this->description,
+            "created_at"=> $this->created_at->diffForHumans()
         ];
     }
 }

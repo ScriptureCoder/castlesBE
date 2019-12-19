@@ -12,6 +12,28 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticlesController extends Controller
 {
+
+    public function listAll(Request $request)
+    {
+        $data = Article::orderBy('id','DESC')->paginate($request->paginate?$request->paginate:10);
+        ArticlesResource::collection($data);
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+    }
+
+    public function edit($id)
+    {
+        $data = Article::findOrFail($id);
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+    }
+
     public function categories()
     {
         $data = PropertyAdvice::all();
@@ -74,7 +96,9 @@ class ArticlesController extends Controller
             $article->slug = $slug;
         }
         $article->text= $request->text;
-        $article->image_id= \App\Http\Controllers\Admin\PropertiesController::image($request->image,Auth::id());
+        if ($request->image){
+            $article->image_id= \App\Http\Controllers\Admin\PropertiesController::image($request->image,Auth::id());
+        }
         $article->category_id= $request->category_id;
         $article->save();
 

@@ -32,8 +32,12 @@ class MagazineController extends Controller
         $data = $request->id?Magazine::findOrFail($request->id):new Magazine();
         $data->title = $request->title;
         $data->description = $request->description;
-        $data->image = $request->image?Storage::disk(env("STORAGE"))->put('/magazines/images', $request->image):"";
-        $data->file = Storage::disk(env("STORAGE"))->put('/magazines', $request->file);
+        if ($request->image){
+            $data->image = Storage::disk(env("STORAGE"))->put('/magazines/images', $request->image);
+        }
+        if($request->file){
+            $data->file = Storage::disk(env("STORAGE"))->put('/magazines', $request->file);
+        }
         $data->save();
 
         return response()->json([
@@ -50,9 +54,19 @@ class MagazineController extends Controller
     }
 
 
-    public function delete(Request $request)
+    public function edit($id)
     {
-        if (is_array($request->id)){
+        $data = Magazine::findOrFail($id);
+
+        return response()->json([
+            "status"=> 1,
+            "data"=> $data,
+        ],200);
+    }
+
+    public function delete($id)
+    {
+        /*if (is_array($request->id)){
             foreach($request->id as $id){
                 $data = Magazine::findOrFail($id);
                 $data->delete();
@@ -60,7 +74,10 @@ class MagazineController extends Controller
         }else{
             $data = Magazine::findOrFail($request->id);
             $data->delete();
-        }
+        }*/
+
+        $data = Magazine::findOrFail($id);
+        $data->delete();
 
 
         return response()->json([

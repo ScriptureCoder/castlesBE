@@ -104,7 +104,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
         Route::get('/{id}/pictures', 'Admin\PropertiesController@gallery');
         Route::post('/{id}/upload', 'Agent\PropertiesController@addToGallery');
         Route::post('/{id}/feature', 'Agent\PropertiesController@featureImage');
-        Route::delete('/{id}/picture/delete/{image}', 'Agent\PropertiesController@removeFromGallery');
+        Route::delete('/{id}/picture/delete/{image}', 'Admin\PropertiesController@removeFromGallery');
 
         Route::post('/approve', 'Admin\PropertiesController@approve');
         Route::post('/disapprove', 'Admin\PropertiesController@disapprove');
@@ -133,23 +133,27 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth:api','admin']], function()
     });
 
     /*Property advise end-points*/
+    Route::get('/articles', 'ArticlesController@listAll');
+    Route::get('/article/{id}', 'ArticlesController@edit');
     Route::post('/article/save', 'ArticlesController@save');
     Route::delete('/article/delete/{id}', 'ArticlesController@deleteArticle');
     Route::delete('/comment/delete/{id}', 'ArticlesController@deleteComment');
 
+
+    /*send newsletter*/
     Route::group(['prefix'=>'newsletter'], function() {
         Route::post('/send', 'Admin\NewsletterController@send');
     });
 
-    /*send newsletter*/
     Route::get('/subscribers', 'Admin\NewsletterController@subscribers');
     Route::post('/send_newsletter', 'Admin\NewsletterController@send');
 
     /*Magazine end-points*/
     Route::get('/magazines', 'Admin\MagazineController@index');
+    Route::get('/magazine/{id}', 'Admin\MagazineController@edit');
     Route::post('/magazine/save', 'Admin\MagazineController@save');
     Route::post('/magazine/download/{id}', 'Admin\MagazineController@download');
-    Route::delete('/magazines/delete', 'Admin\MagazineController@delete');
+    Route::delete('/magazine/delete/{id}', 'Admin\MagazineController@delete');
 
 
     /*advert end-point*/

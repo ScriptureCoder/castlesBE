@@ -43,7 +43,7 @@ class PropertiesController extends Controller
             ->when($type, function ($query) use ($type) {
                 return $query->where('property_type_id', $type);})
             ->when($approved, function ($query) use ($approved) {
-                return $query->where('approved', $approved);})
+                return $query->where('published', $approved);})
             ->when($featured, function ($query) use ($featured) {
                 return $query->where('featured', $featured);})
             ->when($bedrooms, function ($query) use ($bedrooms) {
