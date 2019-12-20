@@ -22,7 +22,7 @@ class ArticlesResource extends Resource
                 'name'=> $article->user->name,
                 'username'=> $article->user->username,
             ],
-            'image'=>$this->image?url("/articles/".$article->image->path):"https://via.placeholder.com/600x200.png?text=".str_replace(" ", "+",$this->title),
+            'image'=>$this->image_id?env("STORAGE") !== "local"? env("STORAGE_PATH")."".$article->image->path:url("/storage/".$article->image->path):"https://via.placeholder.com/600x200.png?text=".$this->slug,
             'title'=>$this->title,
             'slug'=>$this->slug,
             'text'=>str_limit($this->text,100,"..."),

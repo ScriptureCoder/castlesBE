@@ -21,6 +21,7 @@ Route::get('/my_images', 'ImageController@myImages')->middleware(['auth:api']);
 /**Properties listing and search*/
 Route::group(['prefix'=>'properties'], function() {
     Route::get('/', 'PropertiesController@index');
+    Route::get('/explore_count', 'PropertiesController@exploreCount');
     Route::get('/filter', 'PropertiesController@filter');
     Route::get('/{agent_id}', 'PropertiesController@agent');
 });

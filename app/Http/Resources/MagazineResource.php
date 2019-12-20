@@ -17,7 +17,7 @@ class MagazineResource extends Resource
         return [
             "id"=> $this->id,
             "title"=> $this->title,
-            "image"=> env("STORAGE") !== "local"? env("STORAGE_PATH")."".$this->image:url("/storage/".$this->image),
+            "image"=> $this->image?env("STORAGE") !== "local"? env("STORAGE_PATH")."".$this->image:url("/storage/".$this->image):"",
             "description"=> $this->description,
             "created_at"=> $this->created_at->diffForHumans()
         ];

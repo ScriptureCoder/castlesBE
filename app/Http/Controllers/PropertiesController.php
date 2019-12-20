@@ -20,6 +20,19 @@ use Route;
 
 class PropertiesController extends Controller
 {
+    public function exploreCount()
+    {
+        return response()->json([
+            "status"=> 1,
+            "data"=> [
+                "schools"=> Property::where('property_type_id',19)->count(),
+                "lands"=> Property::where('property_type_id',15)->count(),
+                "houses"=> Property::where('property_type_id',14)->count(),
+                "apartments"=> Property::where('property_type_id',2)->count(),
+            ],
+        ],200);
+    }
+
     public function index(Request $request)
     {
         $status = $request->status;
