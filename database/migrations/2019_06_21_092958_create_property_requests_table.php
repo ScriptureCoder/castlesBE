@@ -18,7 +18,7 @@ class CreatePropertyRequestsTable extends Migration
             $table->integer("user_id")->nullable();
             $table->integer("status_id")->default(1);
             $table->integer("budget");
-            $table->string("type");
+            $table->integer("type_id")->default(1);
             $table->integer("bedrooms")->nullable();
             $table->integer("state_id");
             $table->integer("locality_id");

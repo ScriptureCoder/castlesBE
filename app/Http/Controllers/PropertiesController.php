@@ -202,8 +202,7 @@ class PropertiesController extends Controller
     {
 //        return $request;
         $request->validate([
-            'comment' => 'string',
-            'type' => 'string',
+            'type_id' => 'required|integer',
             'category_id' => 'required|integer',
             'budget' => 'integer',
             'bedrooms' => 'integer',
@@ -223,7 +222,7 @@ class PropertiesController extends Controller
             $data->name = $request->name;
             $data->email = $request->email;
         }
-        $data->type = $request->type;
+        $data->type_id = $request->type_id;
         $data->status_id = $request->category_id;
         $data->budget = $request->budget;
         $data->bedrooms = $request->bedrooms;

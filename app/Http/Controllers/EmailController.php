@@ -56,4 +56,55 @@ class EmailController extends Controller
         ]);
     }
 
+    public function contact(Request $request)
+    {
+
+        $request->validate([
+            'email' => 'required|string',
+            'name' => 'required|string',
+            'subject' => 'required|string',
+            'message' => 'required|string',
+        ]);
+
+
+
+        $subject = $request->subject;
+        $name = $request->name;
+        $email = $request->email;
+        $message = $request->message;
+        // send email
+        $email = [
+            "subject"=> $subject,
+            'email' => env("EMAIL"),
+            "html"=> "
+            <table>
+                <tr>
+                    <th>Subject</th>
+                    <td>$subject</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>$email</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>$name</td>
+                </tr>
+                <tr>
+                    <th>Message</th>
+                    <td>$message</td>
+                </tr>
+            </table>
+            "
+        ];
+
+        Mailer::send($email);
+
+
+        return response()->json([
+            'status'=> 1,
+            'message'=> "Sent Successfully!"
+        ]);
+    }
+
 }

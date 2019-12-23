@@ -11,6 +11,7 @@ Route::post('/change_password', 'Auth\API\PasswordController@changePassword')->m
 Route::post('/reset_password/{token}', 'Auth\API\PasswordController@resetPassword');
 
 /*send email*/
+Route::post('/contact', 'EmailController@contact');
 Route::post('/send_email', 'EmailController@send')->middleware(['auth:api']);
 Route::post('/subscribe', 'Auth\API\RegisterController@subscribe');
 
