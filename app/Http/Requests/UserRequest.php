@@ -27,7 +27,7 @@ class UserRequest extends FormRequest
             'username' => 'required|alpha_dash|string|max:255',
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:25',
-            'whatsapp' => 'string|max:25',
+            'whatsapp' => 'max:25',
             'country_id' => 'integer',
             'state_id' => 'integer',
             'address' => 'string|max:255',

@@ -35,6 +35,7 @@ class PropertiesController extends Controller
 
     public function index(Request $request)
     {
+
         $status = $request->status;
         $type = $request->type;
         $approved = $request->approved;
@@ -45,7 +46,14 @@ class PropertiesController extends Controller
         $furnished = $request->furnished;
         $label = $request->label_id;
         $state = $request->state_id;
-        $locality = $request->locality_id;
+
+        if ($request->locality !== "undefined"){
+            $r = str_replace("-"," ",$request->locality);
+            $s = Locality::where('name', 'LIKE', '%'.$r.'%')->first();
+            $locality = $s?$s->id:"";
+        }else{
+            $locality = $request->locality_id;
+        }
 
         $query= Property::where("published", 1)
             ->when($status, function ($query) use ($status) {
