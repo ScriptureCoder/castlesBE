@@ -47,7 +47,7 @@ class PropertiesController extends Controller
         $label = $request->label_id;
         $state = $request->state_id;
 
-        if ($request->locality !== "undefined"){
+        if ($request->locality && $request->locality !== "undefined"){
             $r = str_replace("-"," ",$request->locality);
             $s = Locality::where('name', 'LIKE', '%'.$r.'%')->first();
             $locality = $s?$s->id:"";
